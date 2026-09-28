@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ELT 110 (Circuits I) Interactive Circuits Trainer</title>
+<style>
+:root{--bg:#04070b;--p:#0a121c;--p2:#0e1b29;--ink:#edf8ff;--muted:#9ab1c4;--cyan:#35e4ff;--gold:#ffe05f;--green:#5af39b;--orange:#ff9f43;--red:#ff596b;--purple:#c795ff;--wire:#84eaff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -10%,#18324e,#07101a 38%,#030609 78%);color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif}button,input{font:inherit}.screen{display:none;min-height:100vh}.screen.active{display:block}
+.home{min-height:100vh;padding:38px 20px;display:grid;place-items:center;position:relative;overflow:hidden}.home:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 49.7%,#35e4ff10 50%,transparent 50.3%),linear-gradient(transparent 49.7%,#35e4ff0b 50%,transparent 50.3%);background-size:72px 72px;pointer-events:none}.homeIn{position:relative;z-index:1;width:min(1200px,100%);text-align:center}.eyebrow{font-weight:900;letter-spacing:.22em;color:var(--cyan);font-size:14px}.home h1{font-size:clamp(34px,6vw,72px);margin:8px 0 4px;line-height:.98;text-shadow:0 0 28px #35e4ff3d}.home h1 span{display:block;color:var(--gold);font-size:.53em;margin-top:13px}.lead{max-width:850px;margin:18px auto 30px;color:#b9cad7;font-size:clamp(16px,2vw,21px);line-height:1.55}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.homeCard{min-height:220px;border:1px solid #24455e;border-radius:22px;background:linear-gradient(145deg,#0c1723,#081019);color:white;padding:24px 18px;box-shadow:0 18px 45px #0009,inset 0 0 28px #35e4ff08;transition:.22s;position:relative;overflow:hidden}.homeCard:hover{transform:translateY(-5px);border-color:#4aa6d0;box-shadow:0 22px 55px #000b,0 0 28px #35e4ff18}.homeCard .ico{font-size:44px}.homeCard h2{margin:10px 0 8px;font-size:22px}.homeCard p{color:var(--muted);line-height:1.45}.seriesCard{border-top:3px solid var(--gold)}.parallelCard{border-top:3px solid var(--cyan)}.comboCard{border-top:3px solid var(--purple)}.ohmCard{border-top:3px solid var(--green)}.dcCard{border-top:3px solid var(--orange)}.acCard{border-top:3px solid #ff67d4}
+.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;padding:11px 16px;background:#050a10ed;border-bottom:1px solid #19364a;backdrop-filter:blur(10px)}.top b{font-size:18px}.top span{color:var(--muted);font-size:13px}.back{margin-left:auto;border:1px solid #2d617e;background:#0d1c29;color:#e8faff;border-radius:10px;padding:8px 12px}.page{max-width:1500px;margin:auto;padding:22px}.intro{background:linear-gradient(145deg,#0b1622,#0a1119);border:1px solid #1c3b51;border-radius:22px;padding:22px;margin-bottom:18px;box-shadow:0 16px 45px #0007}.intro h1{margin:0 0 8px;font-size:clamp(28px,4vw,46px)}.introGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:15px}.fact{background:#07111a;border:1px solid #1a3b51;border-radius:13px;padding:13px}.fact b{display:block;color:var(--cyan);margin-bottom:5px}.fact strong{color:var(--gold)}
+.levelTabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.levelTabs button{border:1px solid #2a526d;background:#0c1925;color:#dff7ff;border-radius:999px;padding:9px 14px;font-weight:800}.levelTabs button.active{background:#14374c;border-color:var(--cyan);box-shadow:0 0 18px #35e4ff28}
+.lab{display:grid;grid-template-columns:minmax(610px,1.45fr) minmax(330px,.75fr);gap:18px}.schemWrap{position:relative;background:#04090e;border:1px solid #18384d;border-radius:20px;min-height:530px;overflow:hidden;box-shadow:inset 0 0 35px #35e4ff07}.schem{width:100%;height:530px;display:block}.side{background:#08111a;border:1px solid #193d54;border-radius:20px;padding:16px}.side h3{margin:0 0 12px;color:var(--cyan)}.meters{display:grid;grid-template-columns:1fr 1fr;gap:8px}.meter{background:#0d1925;border:1px solid #1b3d52;border-radius:11px;padding:10px}.meter span{display:block;color:#91a9bc;font-size:11px}.meter b{font-size:17px}.meter.total{border-color:#367e9d;box-shadow:inset 0 0 16px #35e4ff0d}.teach{margin-top:12px;padding:13px;border-radius:12px;background:#0a1822;border:1px solid #23445b;color:#c8d9e5;line-height:1.48}.teach b{color:var(--gold)}.formula{margin-top:14px;padding:14px;background:#071019;border:1px solid #1c4057;border-radius:13px}.formula code{color:var(--gold);font-family:Consolas,monospace}.ctrl{position:absolute;transform:translate(-50%,-50%);z-index:8;text-align:center;background:#06101ae8;border:1px solid #285773;border-radius:10px;padding:5px 7px;box-shadow:0 5px 14px #000b}.ctrl label{display:block;font-size:11px;font-weight:900}.ctrl input{width:86px;background:#07131d;border:1px solid #2b6b88;border-radius:7px;color:white;padding:5px;text-align:center}.ctrl .unit{font-size:9px;color:#91aabd}.wire{stroke:var(--wire);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 5px #35e4ff55)}.res{stroke:var(--gold);stroke-width:4;fill:none;stroke-linejoin:round;filter:drop-shadow(0 0 5px #ffe05f44)}.node{fill:var(--cyan)}.battery{stroke:#ffbd45;stroke-width:5}.svgLabel{fill:#edf8ff;font-size:16px;font-weight:800}.electron{fill:#65eaff;filter:drop-shadow(0 0 5px #35e4ff)}
+.ohmHero{display:grid;grid-template-columns:1fr 1fr;gap:18px}.wheel{min-height:440px;border-radius:24px;background:radial-gradient(circle,#102d3d,#071019 65%);border:1px solid #24536e;display:grid;place-items:center;position:relative;overflow:hidden}.tri{width:310px;height:310px;border-radius:50%;border:3px solid var(--cyan);box-shadow:0 0 35px #35e4ff35;position:relative}.tri .V,.tri .I,.tri .R{position:absolute;font-weight:1000;font-size:52px}.tri .V{top:38px;left:132px;color:var(--gold)}.tri .I{bottom:45px;left:75px;color:var(--cyan)}.tri .R{bottom:45px;right:70px;color:var(--green)}.tri:before{content:"";position:absolute;left:32px;right:32px;top:150px;border-top:3px solid #ffffffaa}.tri:after{content:"";position:absolute;top:150px;bottom:35px;left:153px;border-left:3px solid #ffffffaa}.ohmContent{display:grid;gap:12px}.history,.lawCard{background:#0a151f;border:1px solid #1e4259;border-radius:18px;padding:18px}.lawCard h3,.history h3{margin:0 0 8px;color:var(--cyan)}.lawEq{font:900 26px Consolas,monospace;color:var(--gold)}.history p,.lawCard p{color:#c1d2de;line-height:1.55}.ohmCalc{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ohmCalc label{background:#071019;border:1px solid #1c4057;border-radius:12px;padding:10px}.ohmCalc input{width:100%;margin-top:5px;padding:8px;border-radius:8px;background:#0b1823;color:white;border:1px solid #2d6987}.bigAnswer{grid-column:1/-1;padding:14px;border-radius:13px;background:#102416;border:1px solid #2d8150;text-align:center;font-size:22px;color:var(--green);font-weight:900}
+@media(max-width:1050px){.cards,.introGrid{grid-template-columns:1fr 1fr}.lab,.ohmHero{grid-template-columns:1fr}.schemWrap{overflow-x:auto}.schem{min-width:700px}}@media(max-width:650px){.cards,.introGrid{grid-template-columns:1fr}.page{padding:10px}.meters{grid-template-columns:1fr 1fr}.home{padding:18px 10px}}
+
+/* v2 learning-workflow refinements */
+.levelTabs{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(48px,1fr));gap:7px!important}
+.levelTabs button{min-width:0}
+.controlBank{margin-top:12px;padding:14px;border:1px solid #244d67;border-radius:16px;background:linear-gradient(145deg,#07111a,#0b1823)}
+.controlBank h3{margin:0 0 10px;color:var(--gold);font-size:15px;letter-spacing:.06em}
+.controlGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px}
+.knob{background:#0d1a27;border:1px solid #25536d;border-radius:11px;padding:8px;text-align:center}
+.knob.sourceKnob{border-color:#8a6723;background:#18150b}.knob label{display:block;font-size:11px;font-weight:900;color:#dff6ff;margin-bottom:5px}
+.knob input{width:100%;background:#06111a;color:white;border:1px solid #34708e;border-radius:7px;padding:7px;text-align:center;font-weight:800}
+.knob small{display:block;color:#91aabd;margin-top:4px;font-size:9px}
+.answerGate{margin-top:14px;border:1px solid #2d607d;border-radius:18px;background:radial-gradient(circle at 50% 0,#132b3d,#071019 72%);padding:16px;box-shadow:inset 0 0 30px #35e4ff0b}
+.answerTop{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.answerTop h3{margin:0!important;color:#fff!important}.revealBtn{border:1px solid #43d6ff;background:linear-gradient(135deg,#0c6885,#123c57);color:white;border-radius:12px;padding:11px 17px;font-weight:1000;letter-spacing:.04em;box-shadow:0 0 20px #35e4ff25}
+.revealBtn:hover{transform:translateY(-1px);box-shadow:0 0 28px #35e4ff42}.revealBtn.hideAns{border-color:#6c8291;background:#17232d}
+.answerHint{color:#a8bdcc;font-size:12px;margin-top:8px}.answerBody{display:none;margin-top:13px}.answerGate.revealed .answerBody{display:block;animation:answerIn .28s ease-out}.answerGate.revealed{border-color:#52e99a;box-shadow:0 0 25px #59f39b1c,inset 0 0 34px #59f39b0a}
+@keyframes answerIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.answerBody .meters{grid-template-columns:repeat(2,1fr)}.answerBody .meter{border-color:#254b63;background:linear-gradient(145deg,#0d1c29,#09131d)}
+.answerBody .meter.total{border-color:#59f39b;box-shadow:0 0 15px #59f39b1b,inset 0 0 16px #59f39b0b}
+.answerBody .meter:nth-child(3n+1) b{color:var(--cyan)}.answerBody .meter:nth-child(3n+2) b{color:var(--gold)}.answerBody .meter:nth-child(3n) b{color:var(--green)}
+.solveFirst{margin:12px 0;padding:11px 13px;border-left:4px solid var(--purple);background:#120d1d;border-radius:8px;color:#d8c8e9;font-size:13px;line-height:1.45}
+.schemWrap{min-height:480px!important}.schem{height:480px!important;min-width:760px}
+.svgLabel{paint-order:stroke;stroke:#03070b;stroke-width:5px;stroke-linejoin:round;font-size:14px!important}
+.componentValue{fill:#a9c0d0;font-size:11px;font-weight:700;paint-order:stroke;stroke:#03070b;stroke-width:4px}.schem .svgLabel{font-weight:900}.schem .componentValue{letter-spacing:.02em}
+@media(max-width:800px){.levelTabs{grid-template-columns:repeat(5,1fr)!important}.answerBody .meters{grid-template-columns:1fr 1fr}}
+
+/* v3 compact trainer + fundamentals */
+.schemWrap{min-height:390px!important}.schem{height:390px!important;min-width:0!important}.lab{grid-template-columns:minmax(500px,1.35fr) minmax(320px,.65fr)!important}.controlBank{padding:10px!important}.controlGrid{grid-template-columns:repeat(auto-fit,minmax(100px,1fr))!important}.knob{padding:6px!important}.knob input{padding:5px!important}
+.basicsGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:16px 0}.conceptCard,.historyBand,.compareBand,.waveLab{background:linear-gradient(145deg,#0b1722,#071019);border:1px solid #20445b;border-radius:20px;padding:18px;box-shadow:0 14px 35px #0007}.conceptCard h2,.historyBand h2,.compareBand h2{margin:7px 0;color:#eaf8ff}.conceptCard p{color:#b8cad7;line-height:1.5}.conceptIcon{font-size:36px;font-weight:1000;color:var(--cyan);text-shadow:0 0 18px #35e4ff45}.pillRow{display:flex;gap:6px;flex-wrap:wrap}.pillRow span{padding:5px 8px;border:1px solid #2d617c;border-radius:999px;color:#bdeeff;font-size:11px}.miniRail{height:42px;position:relative;margin-top:15px;border-top:3px solid #62e8ff}.miniRail i{position:absolute;top:-7px;width:11px;height:11px;border-radius:50%;background:#69ebff;animation:rail 3s linear infinite}.miniRail i:nth-child(2){animation-delay:-.6s}.miniRail i:nth-child(3){animation-delay:-1.2s}.miniRail i:nth-child(4){animation-delay:-1.8s}.miniRail i:nth-child(5){animation-delay:-2.4s}@keyframes rail{from{left:95%}to{left:0}}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.timeline div{border-left:3px solid var(--gold);background:#09141e;padding:13px;border-radius:8px}.timeline b{display:block;color:var(--gold);margin-bottom:6px}.timeline span{color:#b8cad7;line-height:1.45;font-size:13px}.compareGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.compareGrid div{background:#07121b;border:1px solid #1d4057;border-radius:12px;padding:13px}.compareGrid b,.compareGrid strong,.compareGrid small{display:block}.compareGrid b{color:var(--cyan)}.compareGrid strong{margin:6px 0}.compareGrid small{color:#91aabd}
+.waveLab{padding:16px}.waveControls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.waveControls label{background:#08131d;border:1px solid #1e465e;border-radius:12px;padding:10px;color:#a9c0d0;font-size:12px}.waveControls input{width:100%}.waveControls b{display:block;color:var(--gold);font-size:16px;margin-top:4px}#acCanvas{width:100%;height:auto;display:block;background:radial-gradient(circle at center,#0b2130,#03080d);border:1px solid #1e506a;border-radius:15px;margin:12px 0}.waveMeters{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.waveMeters div{background:#07131d;border:1px solid #28516a;border-radius:11px;padding:10px;text-align:center}.waveMeters span,.waveMeters b{display:block}.waveMeters span{font-size:10px;color:#8fa9bc}.waveMeters b{color:#5af39b;margin-top:4px}.waveExplain{margin-top:10px;padding:12px;border-left:4px solid var(--purple);background:#120d1d;border-radius:8px;color:#d7cbe4;line-height:1.5}
+@media(max-width:1050px){.basicsGrid,.timeline,.compareGrid{grid-template-columns:1fr 1fr}.waveMeters{grid-template-columns:repeat(3,1fr)}.lab{grid-template-columns:1fr!important}}@media(max-width:650px){.basicsGrid,.timeline,.compareGrid,.waveControls,.waveMeters{grid-template-columns:1fr}.schem{min-width:620px!important}}
+
+/* v4 PROFESSIONAL POLISH — clean, compact, classroom-first */
+:root{--deep:#020509;--glass:#0a141ee8;--edge:#244b63;--soft:#b8cad7}
+body{background:
+ radial-gradient(circle at 18% 0,#12304a55,transparent 30%),
+ radial-gradient(circle at 82% 8%,#34204d33,transparent 25%),
+ linear-gradient(#050a10,#020509 72%) fixed}
+.homeCard{min-height:200px!important;text-align:left;padding:22px!important}.homeCard .ico{font-size:38px}.homeCard h2{font-size:21px}.homeCard p{font-size:14px}
+.intro{padding:18px!important}.intro h1{letter-spacing:-.02em}.fact{transition:.2s}.fact:hover{transform:translateY(-2px);border-color:#347594}
+.levelTabs{max-width:850px}.levelTabs button{transition:.18s}.levelTabs button:hover{border-color:#54dfff;transform:translateY(-1px)}
+.lab{align-items:start}.schemWrap{background:
+ linear-gradient(#35e4ff08 1px,transparent 1px),linear-gradient(90deg,#35e4ff08 1px,transparent 1px),#03080d!important;background-size:32px 32px!important;border-color:#24506a!important}
+.schem{height:360px!important}.controlBank{margin-top:9px!important}.answerGate{position:relative;overflow:hidden}.answerGate:before{content:"";position:absolute;left:0;top:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--green),transparent)}
+.meter b{letter-spacing:.01em}.teach{font-size:13px}.formula{font-size:13px;line-height:1.7}
+.page{padding-top:16px}.solveFirst{box-shadow:inset 0 0 18px #c795ff08}
+.sectionBadge{display:inline-flex;gap:7px;align-items:center;padding:5px 9px;border-radius:999px;border:1px solid #2a5871;background:#081722;color:#9feeff;font-size:10px;font-weight:900;letter-spacing:.08em;margin-bottom:8px}
+.branchLabel{fill:#8faec2;font-size:10px;font-weight:800;letter-spacing:.08em}
+@media(max-width:1050px){.schem{height:345px!important}}@media(max-width:650px){.schem{height:340px!important}}
+
+.sourceVoltage{
+  fill:#ff3b3b;
+  font-size:18px;
+  font-weight:1000;
+  letter-spacing:.02em;
+  paint-order:stroke;
+  stroke:#250000;
+  stroke-width:5px;
+  filter:drop-shadow(0 0 5px #ff2c2c);
+}
+
+/* v4.6 COMPONENT READABILITY — high-contrast instrumentation look */
+.schem .svgLabel{
+  fill:#fff36a !important;
+  font-size:17px !important;
+  font-weight:1000 !important;
+  letter-spacing:.045em;
+  paint-order:stroke;
+  stroke:#171000;
+  stroke-width:4px;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 0 3px #ffc92888);
+}
+.schem .componentValue{
+  fill:#54e8ff !important;
+  font-size:16px !important;
+  font-weight:1000 !important;
+  letter-spacing:.035em !important;
+  paint-order:stroke;
+  stroke:#00151b !important;
+  stroke-width:4px !important;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 0 3px #21d8ff88);
+}
+.schem .sourceVoltage{
+  font-size:21px !important;
+  font-weight:1000 !important;
+}
+
+/* v4.8 REVEAL GROUPING — keep each resistor's electrical story together */
+.answerGroupGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;margin-top:10px}
+.answerGroup{border:1px solid #27536b;border-radius:12px;background:linear-gradient(145deg,#081722,#050d14);padding:10px;box-shadow:inset 0 0 16px #35e4ff08}
+.answerGroup h4{margin:0 0 8px;color:#fff36a;font-size:15px;font-weight:1000;letter-spacing:.04em;border-bottom:1px solid #25485b;padding-bottom:6px}
+.answerGroup .meters{display:grid;grid-template-columns:1fr;gap:6px}
+.answerGroup .meter{margin:0!important;min-height:0!important;padding:8px 10px!important}
+.answerTotals{border:1px solid #3d755f;border-radius:12px;background:#071610;padding:10px;margin-bottom:10px}
+.answerTotals h4{margin:0 0 8px;color:#72ffb1;font-size:15px;font-weight:1000;letter-spacing:.04em}
+.answerTotals .meters{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px}
+.studentAnswers{margin-top:12px;border:1px solid #31546b;border-radius:14px;background:#06111a;padding:14px}.studentAnswers h3{margin:0 0 5px;color:#fff36a;font-size:17px}.answerHint,.checkSummary{color:#9db6c7;font-size:12px}.studentAnswerGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin-top:10px}.studentEntry{border:1px solid #203e51;border-radius:10px;padding:8px;background:#071018}.studentEntry label{display:block;color:#bfeeff;font-size:11px;font-weight:900;margin-bottom:5px}.entryRow{display:flex;gap:5px;align-items:center}.studentEntry input{width:100%;min-width:0;background:#02070b;color:#fff;border:1px solid #37627a;border-radius:7px;padding:8px;font-size:15px;font-weight:900}.unit{font-size:11px;color:#8eacbe;font-weight:900}.studentEntry.correct{border-color:#39d98a}.studentEntry.incorrect{border-color:#ff6262}.studentEntry.close{border-color:#ffd75f}.answerFeedback{font-size:10px;font-weight:900;min-height:13px;margin-top:5px}.correct .answerFeedback{color:#65f0a7}.incorrect .answerFeedback{color:#ff8585}.close .answerFeedback{color:#ffe071}.checkStrip{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}.checkStrip button{border:1px solid #39718e;border-radius:9px;background:#0a2030;color:#dff8ff;padding:8px 12px;font-weight:900}
+/* v5.2 CLASSROOM HOMEPAGE */
+.homeIn{max-width:1240px!important}
+.homeHero{position:relative;overflow:hidden;border:1px solid #21495f;border-radius:22px;padding:28px 28px 24px;margin-bottom:18px;background:radial-gradient(circle at 82% 15%,#123247 0,#07141f 34%,#040a10 72%);box-shadow:0 18px 55px #0008,inset 0 0 55px #1ddcff08}
+.homeHero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 0 49%,#54e8ff08 50%,transparent 51%),linear-gradient(0deg,transparent 0 49%,#54e8ff06 50%,transparent 51%);background-size:44px 44px;mask-image:linear-gradient(to left,#000,transparent 70%);pointer-events:none}
+.courseLine{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:7px}
+.courseBadge{border:1px solid #54e8ff66;background:#062131;color:#73efff;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:1000;letter-spacing:.13em}
+.homeHero h1{position:relative;margin:0;color:#f5fbff;font-size:clamp(32px,5vw,60px);line-height:1.02;letter-spacing:-.035em;white-space:nowrap}
+.homeHero h1 .courseParen{color:#fff36a}
+.homeHero .trainerTitle{position:relative;color:#54e8ff;font-size:clamp(17px,2vw,24px);font-weight:1000;letter-spacing:.12em;margin-top:8px}
+.homeHero .lead{position:relative;max-width:830px;font-size:15px;line-height:1.6;color:#c5d7e2;margin:15px 0 0}
+.classStrip{position:relative;display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
+.classChip{border:1px solid #29495b;background:#07151e;border-radius:8px;padding:7px 10px;color:#a9c4d4;font-size:11px;font-weight:900}
+.homeSectionLabel{display:flex;align-items:center;gap:10px;margin:19px 2px 10px;color:#8caabd;font-size:11px;font-weight:1000;letter-spacing:.15em}
+.homeSectionLabel:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,#31536a,transparent)}
+.homeCard{position:relative;overflow:hidden}
+.homeCard:after{content:"OPEN LAB →";position:absolute;right:14px;bottom:11px;color:#66879b;font-size:9px;font-weight:1000;letter-spacing:.09em;opacity:.7}
+.homeCard:hover:after{color:#54e8ff;opacity:1}
+.homeFooter{margin-top:19px;border-top:1px solid #1e3442;padding:14px 3px 4px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#718c9c;font-size:11px}
+.homeFooter strong{color:#b7d2df}
+@media(max-width:720px){.homeHero{padding:20px 17px}.homeHero h1{font-size:clamp(27px,8.5vw,42px);white-space:normal}.homeHero .trainerTitle{letter-spacing:.07em}.homeFooter{display:block}.homeFooter span{display:block;margin-top:5px}}
+
+/* v5.4 AUTHOR CREDIT */
+.creatorCredit{margin-top:16px;display:flex;align-items:center;gap:13px;border:1px solid #31536a;border-radius:13px;background:linear-gradient(90deg,#07151f,#091b27 65%,#07131b);padding:11px 14px;box-shadow:inset 0 0 18px #54e8ff08}
+.creatorMark{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid #54e8ff77;color:#fff36a;background:#06131d;font-size:19px;font-weight:1000;box-shadow:0 0 15px #54e8ff18}
+.creatorText{line-height:1.25}.creatorText b{display:block;color:#eaf8ff;font-size:13px;letter-spacing:.04em}.creatorText span{display:block;color:#83aabd;font-size:11px;margin-top:3px}.creatorText .role{color:#54e8ff;font-weight:900}
+
+/* v5.6 CENTERED ATTRIBUTION */
+.creatorCredit{justify-content:center;text-align:center}
+.creatorText{text-align:center}
+.homeFooter{justify-content:center!important;text-align:center}
+.homeFooter strong,.homeFooter span{text-align:center}
+
+/* v5.8 HOMEPAGE CENTERING */
+.homeHero{text-align:center}
+.homeHero .courseLine,.homeHero .classStrip{justify-content:center}
+.homeHero .lead{margin:15px auto 0!important;text-align:center}
+.homeHero .trainerTitle{text-align:center}
+.homeSectionLabel{justify-content:center;text-align:center}
+.homeSectionLabel:before,.homeSectionLabel:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,#31536a)}
+.homeSectionLabel:after{background:linear-gradient(90deg,#31536a,transparent)}
+.cards{text-align:center}
+.homeCard{text-align:center}
+.homeCard .ico{margin-left:auto;margin-right:auto}
+.homeCard p{margin-left:auto;margin-right:auto;text-align:center}
+.homeCard:after{left:50%;right:auto;transform:translateX(-50%);white-space:nowrap}
+
+/* v6.0 SERIES RC AC LAB */
+.rcCard{border-color:#a96cff!important}.rcLab{max-width:1400px;margin:auto;padding:18px}.rcGrid{display:grid;grid-template-columns:minmax(520px,.9fr) minmax(560px,1.1fr);gap:16px}
+.rcPanel,.scopeShell{background:linear-gradient(180deg,#091a25,#06121a);border:1px solid #31536a;border-radius:15px;padding:15px;box-shadow:inset 0 0 24px #37e6ff08}
+.rcControls{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:12px 0}.rcControls label{background:#081722;border:1px solid #28495e;border-radius:10px;padding:9px;text-align:center;font-size:11px;color:#8fb4c7;font-weight:900}.rcControls input{width:100%;margin:7px 0}.rcControls b{display:block;color:#fff;font-size:14px}
+.rcMeters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.rcMeter{background:#06131d;border:1px solid #27475a;border-radius:10px;padding:9px;text-align:center}.rcMeter span{display:block;color:#7fa7bb;font-size:10px;font-weight:900;letter-spacing:.06em}.rcMeter b{display:block;color:#66efff;font-size:16px;margin-top:4px}.rcMeter.power b{color:#ffe45c}.rcMeter.pf b{color:#77ff9c}
+.rcSchematic{width:100%;height:270px;background:#050d13;border:1px solid #203d4e;border-radius:12px}.rcWire{stroke:#62eaff;stroke-width:4;fill:none}.rcRes{stroke:#ffe45c;stroke-width:4;fill:none}.rcCap{stroke:#b67cff;stroke-width:5}.rcLabel{fill:#ffe45c;font-size:17px;font-weight:1000}.rcVal{fill:#62eaff;font-size:16px;font-weight:1000}.rcSource{fill:#ff4545;font-size:19px;font-weight:1000}
+.scopeShell{padding:12px;background:linear-gradient(145deg,#30373b,#11171a 12%,#050809 82%,#30373b);border:4px solid #596064;box-shadow:0 10px 30px #0009,inset 0 0 0 2px #15191b}.scopeBrand{display:flex;justify-content:space-between;color:#d6dadb;font:900 11px monospace;letter-spacing:.08em;padding:3px 5px 8px}.scopeScreen{position:relative;border:7px solid #151b1e;border-radius:14px;background:#010807;box-shadow:inset 0 0 30px #00ff7722}.scopeScreen canvas{display:block;width:100%;height:390px}.scopeLegend{display:flex;justify-content:center;gap:20px;padding:9px;font:900 12px monospace}.chV{color:#ffe45c}.chI{color:#54e8ff}.scopeKnobs{display:flex;justify-content:center;gap:25px;padding:5px}.knob{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#737b80,#20272b 55%,#07090a 70%);border:2px solid #899196;position:relative}.knob:after{content:"";position:absolute;width:2px;height:14px;background:#fff;left:19px;top:4px}
+.rcTeach{margin-top:15px;display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.rcTeach div{background:#071722;border:1px solid #27495d;border-radius:10px;padding:10px;color:#b8d2df;font-size:12px}.rcTeach b{display:block;color:#fff36a;margin-bottom:5px}
+@media(max-width:1050px){.rcGrid{grid-template-columns:1fr}.rcControls{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){.rcLab{padding:8px}.rcMeters{grid-template-columns:repeat(2,1fr)}.rcTeach{grid-template-columns:1fr 1fr}.scopeScreen canvas{height:300px}}
+
+.scopeControlPanel{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:8px 12px 4px}.scopeControlPanel label{background:#101619;border:1px solid #596166;border-radius:8px;padding:7px;text-align:center;font:900 10px monospace}.scopeControlPanel label span{display:block;margin-bottom:5px}.scopeControlPanel select{background:#050809;color:#e8eeee;border:1px solid #788187;border-radius:5px;padding:5px;width:82%;font:900 11px monospace}.scopeControlPanel small{font:900 10px monospace;margin-left:4px}.scopeReadout{display:flex;justify-content:center;gap:22px;font:900 11px monospace;padding:6px 8px;color:#dce4e5}
+@media(max-width:650px){.scopeControlPanel{grid-template-columns:1fr}.scopeReadout{flex-wrap:wrap;gap:10px}}
+
+.rlCard{border-color:#ff9d48!important}.rlAccent{color:#ffb45c}.rlInd{stroke:#ff9d48;stroke-width:4;fill:none;filter:drop-shadow(0 0 5px #ff9d4866)}
+.rclCard{border-color:#59f39b!important}.rclCap{stroke:#b67cff;stroke-width:5}.rclRes{stroke:#ffe45c;stroke-width:4;fill:none}.rclInd{stroke:#ff9d48;stroke-width:4;fill:none;filter:drop-shadow(0 0 5px #ff9d4866)}
+
+/* v6.3 — shift AC circuit schematics right so the source-voltage label is fully visible */
+#rclab .rcSchematic,#rllab .rcSchematic{overflow:visible}
+
+/* v6.5 ANIMATED DC CIRCUIT TUTORIALS */
+.tutorialCard{border-color:#56f0b0!important}.tutVisual{position:relative}.tutStatus{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}.tutStatus div{background:#06131d;border:1px solid #27475a;border-radius:9px;padding:7px;text-align:center}.tutStatus span{display:block;color:#789bae;font-size:9px;font-weight:900;letter-spacing:.08em}.tutStatus b{display:block;color:#72ffb1;font-size:15px;margin-top:3px}.tutCallout{margin-top:10px;padding:10px 12px;border:1px solid #3c5364;border-radius:10px;background:#08131b;color:#bad1dc;font-size:12px;line-height:1.45}.tutCallout b{color:#fff36a}.tutEquationStack{white-space:pre-line}.tutCircuit .flow{stroke:#65ecff;stroke-width:5;fill:none;stroke-dasharray:5 17;animation:tutFlow 1.25s linear infinite;filter:drop-shadow(0 0 5px #35e4ff)}.tutCircuit .focus{stroke:#77ff9c!important;filter:drop-shadow(0 0 7px #77ff9c)}.tutCircuit .dim{opacity:.28}.tutCircuit .vmark{fill:#ff7bd5;font-size:12px;font-weight:900}.tutCircuit .imark{fill:#65ecff;font-size:12px;font-weight:900}.tutCircuit .pmark{fill:#ffb45c;font-size:11px;font-weight:900}@keyframes tutFlow{to{stroke-dashoffset:-44px}}.tutPage{max-width:1450px;margin:auto;padding:18px}.tutHero{text-align:center}.tutNav{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:14px 0}.tutNav button,.tutBtn{border:1px solid #34708e;background:#0a2030;color:#eaffff;border-radius:10px;padding:9px 13px;font-weight:900}.tutNav button.active{border-color:#fff36a;color:#fff36a;box-shadow:0 0 18px #fff36a22}.tutStage{display:grid;grid-template-columns:minmax(500px,1.15fr) minmax(390px,.85fr);gap:16px}.tutVisual,.tutStory{background:linear-gradient(145deg,#07141e,#040a10);border:1px solid #28516a;border-radius:18px;padding:16px;min-height:520px;box-shadow:inset 0 0 35px #35e4ff08}.tutCircuit{width:100%;height:350px;background:linear-gradient(#35e4ff08 1px,transparent 1px),linear-gradient(90deg,#35e4ff08 1px,transparent 1px),#03080d;background-size:30px 30px;border:1px solid #21485e;border-radius:14px}.tutStep{font-size:11px;font-weight:1000;letter-spacing:.13em;color:#56f0b0}.tutStory h2{color:#fff36a;margin:7px 0}.tutEq{font:900 23px Consolas,monospace;color:#66efff;background:#041018;border-left:4px solid #c795ff;border-radius:8px;padding:13px;margin:13px 0}.tutExplain{color:#c3d8e3;line-height:1.6;font-size:14px}.tutAnswer{font-size:28px;font-weight:1000;color:#77ff9c;margin:11px 0;text-shadow:0 0 12px #77ff9c44}.tutProgress{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin:13px 0}.tutProgress i{height:7px;background:#152b38;border-radius:10px}.tutProgress i.on{background:#56f0b0;box-shadow:0 0 9px #56f0b0}.tutControls{display:flex;justify-content:space-between;gap:8px;margin-top:15px}.tutAuto{display:flex;align-items:center;gap:8px;color:#91b2c4;font-size:12px}.tutPulse{animation:tutPulse 1s ease-in-out infinite alternate}@keyframes tutPulse{to{filter:drop-shadow(0 0 10px #fff36a);opacity:.72}}@media(max-width:1000px){.tutStage{grid-template-columns:1fr}}
+
+/* v6.7 POLISHED DC VALUE CONTROLS — clean instrument-panel layout */
+.controlBank{padding:14px!important;background:linear-gradient(145deg,#07131d,#0a1c29)!important;box-shadow:inset 0 0 24px #35e4ff0a}
+.controlBank h3{text-align:center;margin:0 0 12px!important;color:#bfefff!important;font-size:12px!important;letter-spacing:.1em}
+.controlGrid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important;gap:10px!important}
+.controlGrid .knob{width:auto!important;height:auto!important;border-radius:13px!important;background:linear-gradient(180deg,#0d202e,#07131d)!important;border:1px solid #28546c!important;padding:10px 11px!important;position:relative!important;text-align:left!important;box-shadow:inset 0 0 14px #35e4ff08!important}
+.controlGrid .knob:after{display:none!important}.controlGrid .knob.sourceKnob{border-color:#8b6b29!important;background:linear-gradient(180deg,#201a0b,#0f120d)!important}
+.controlGrid .knob label{display:block!important;margin:0 0 7px!important;color:#9fc8da!important;font-size:10px!important;letter-spacing:.09em!important;text-align:center!important}
+.valueControl{display:grid;grid-template-columns:32px minmax(58px,1fr) 32px;align-items:center;gap:6px}
+.valueControl button{height:34px;border:1px solid #34708e;border-radius:8px;background:linear-gradient(#12344a,#0a1e2b);color:#eaffff;font-size:20px;font-weight:1000;line-height:1;cursor:pointer;box-shadow:inset 0 0 9px #35e4ff12}.valueControl button:hover{border-color:#62eaff;background:#123d54}.valueControl button:active{transform:translateY(1px)}
+.valueControl input{appearance:textfield;-moz-appearance:textfield;width:100%!important;min-width:0!important;height:40px!important;padding:5px 4px!important;border:1px solid #3c718c!important;border-radius:8px!important;background:#02080d!important;color:#fff36a!important;text-align:center!important;font:1000 18px Consolas,monospace!important;box-shadow:inset 0 0 12px #000b!important}
+.valueControl input::-webkit-outer-spin-button,.valueControl input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.valueUnit{text-align:center;margin-top:6px;color:#64eaff;font-size:10px;font-weight:1000;letter-spacing:.08em}.sourceKnob .valueUnit{color:#ffcc55}
+@media(max-width:650px){.controlGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.valueControl{grid-template-columns:29px minmax(48px,1fr) 29px}.valueControl input{font-size:16px!important}}
+
+
+/* v7.2 — 25-pass tutorial engagement/TQM polish */
+.tutVisual,.tutStory{position:relative;overflow:hidden}.tutVisual:before,.tutStory:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 15% 10%,#35e4ff0c,transparent 28%),radial-gradient(circle at 90% 85%,#c795ff0b,transparent 30%)}
+.tutCircuit{position:relative;box-shadow:inset 0 0 38px #35e4ff0d,0 0 25px #0008}.tutCircuit .rgrp{transition:opacity .35s,filter .35s}.tutCircuit .nodePulse{animation:nodePulse 1.05s ease-in-out infinite alternate}.tutCircuit .hotValue{animation:valuePulse 1.05s ease-in-out infinite alternate}.tutCircuit .flow{animation:tutFlow .95s linear infinite;stroke:#4ff6ff;filter:drop-shadow(0 0 8px #35e4ff)}
+@keyframes nodePulse{to{r:8;filter:drop-shadow(0 0 9px #54e8ff)}}@keyframes valuePulse{to{filter:drop-shadow(0 0 8px currentColor);opacity:.7}}@keyframes valuePulseBox{0%,100%{transform:scale(1);box-shadow:0 0 8px #0000}50%{transform:scale(1.025);box-shadow:0 0 22px #54e8ff35}}
+.tutStatus div{position:relative;overflow:hidden;transition:.25s}.tutStatus div.activeValue{border-color:#54e8ff;background:linear-gradient(145deg,#082333,#07141e);animation:valuePulseBox 1.25s ease-in-out infinite}.tutStatus div.doneValue{border-color:#55d995}.tutStatus div.activeValue b{color:#fff36a;text-shadow:0 0 12px #fff36a88}.tutStatus div:before{content:"";position:absolute;left:-100%;top:0;width:55%;height:100%;background:linear-gradient(90deg,transparent,#ffffff0c,transparent);transform:skewX(-18deg)}.tutStatus div.activeValue:before{animation:meterSweep 1.8s linear infinite}@keyframes meterSweep{to{left:150%}}
+.tutStep{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid #56f0b066;border-radius:999px;background:#062017}.tutStory h2{font-size:clamp(24px,3vw,36px);line-height:1.08;text-shadow:0 0 18px #fff36a20}.tutEq{position:relative;overflow:hidden;border:1px solid #294f67;border-left:5px solid #c795ff;box-shadow:inset 0 0 22px #35e4ff09}.tutEq.activeEq{animation:eqGlow 1.35s ease-in-out infinite alternate}@keyframes eqGlow{to{border-left-color:#54e8ff;box-shadow:inset 0 0 28px #35e4ff12,0 0 18px #35e4ff16}}
+.tutAnswer{display:inline-block;padding:8px 13px;border-radius:10px;background:#061811;border:1px solid #3b815d;animation:answerGlow 1.3s ease-in-out infinite alternate}@keyframes answerGlow{to{text-shadow:0 0 18px #77ff9c;box-shadow:0 0 18px #77ff9c25}}
+.tutProgress{position:relative}.tutProgress i{height:9px;transition:.3s}.tutProgress i.on{background:linear-gradient(90deg,#35e4ff,#56f0b0);box-shadow:0 0 12px #56f0b066}.tutProgress i.current{background:linear-gradient(90deg,#fff36a,#ff9f43);animation:progressPulse .9s ease-in-out infinite alternate}@keyframes progressPulse{to{box-shadow:0 0 18px #fff36aaa}}
+.tutLayman{margin-top:12px;padding:13px 14px;border-radius:12px;border:1px solid #6b4d8c;background:linear-gradient(145deg,#140c20,#0b1019);color:#d8cbe7;line-height:1.5;font-size:13px}.tutLayman b{color:#d6a8ff;letter-spacing:.05em}.tutRule{margin-top:10px;padding:11px 13px;border-radius:10px;border-left:4px solid #ff9f43;background:#1b1008;color:#e8d0bc;font-size:13px}.tutRule b{color:#ffbd72}.tutMiniLegend{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:9px 0 2px}.tutMiniLegend span{font-size:10px;font-weight:900;border:1px solid #2d5268;border-radius:999px;padding:5px 8px;background:#07131d}.tutMiniLegend .lv{color:#ff7bd5}.tutMiniLegend .li{color:#65ecff}.tutMiniLegend .lp{color:#ffb45c}.tutMiniLegend .lr{color:#fff36a}
+.tutControls .tutBtn{transition:.18s;box-shadow:0 5px 14px #0005}.tutControls .tutBtn:hover{transform:translateY(-2px);border-color:#54e8ff;box-shadow:0 7px 20px #35e4ff20}.tutCallout{border-left:4px solid #54e8ff;background:linear-gradient(90deg,#071923,#08131b);font-size:13px}.tutCallout b{color:#54e8ff}.teach{border-left:4px solid #fff36a}.teach b{display:block;color:#fff36a;margin-bottom:5px}
+@media(prefers-reduced-motion:reduce){.tutCircuit .flow,.tutCircuit .nodePulse,.tutCircuit .hotValue,.tutStatus div.activeValue,.tutStatus div.activeValue:before,.tutEq.activeEq,.tutAnswer,.tutProgress i.current{animation:none!important}}
+
+
+/* v7.3 OHM'S LAW QUICK REFERENCE */
+.answerActions{display:flex;flex-direction:column;gap:8px;align-items:stretch;min-width:235px}.ohmRefBtn{border:1px solid #ffe05f;background:linear-gradient(135deg,#4b3510,#182536);color:#fff36a;border-radius:12px;padding:10px 15px;font-weight:1000;letter-spacing:.045em;box-shadow:0 0 18px #ffe05f20;cursor:pointer}.ohmRefBtn:hover{transform:translateY(-1px);box-shadow:0 0 27px #ffe05f3b;border-color:#fff36a}.ohmRef{display:none;margin-top:13px;border:1px solid #3b6f88;border-radius:18px;padding:16px;background:radial-gradient(circle at 30% 15%,#14364a,#07121b 55%,#04090e);box-shadow:inset 0 0 35px #35e4ff0b}.answerGate.ohmOpen .ohmRef{display:block;animation:answerIn .25s ease-out}.answerGate.ohmOpen .answerHint,.answerGate.ohmOpen .answerBody{display:none!important}.ohmRefTop{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:13px}.ohmRefTop h3{margin:0;color:#fff36a!important}.ohmClose{border:1px solid #58798c;background:#101d27;color:#e9f9ff;border-radius:9px;padding:7px 11px;font-weight:900;cursor:pointer}.ohmRefGrid{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(320px,1.15fr);gap:15px;align-items:center}.ohmWheel{width:min(330px,100%);aspect-ratio:1;margin:auto;border-radius:50%;position:relative;background:radial-gradient(circle,#153c50 0,#081721 60%,#04090e 72%);border:4px solid #35e4ff;box-shadow:0 0 35px #35e4ff42,inset 0 0 30px #35e4ff15}.ohmWheel:before{content:"";position:absolute;left:10%;right:10%;top:49.5%;border-top:4px solid #d9f7ff}.ohmWheel:after{content:"";position:absolute;top:49.5%;bottom:10%;left:49.5%;border-left:4px solid #d9f7ff}.ohmWheel .ow{position:absolute;font-weight:1000;text-shadow:0 0 14px currentColor}.ohmWheel .ov{top:15%;left:46%;font-size:55px;color:#ff6a8a}.ohmWheel .oi{bottom:16%;left:23%;font-size:50px;color:#54e8ff}.ohmWheel .or{bottom:16%;right:21%;font-size:50px;color:#fff36a}.ohmWheel .wheelHint{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);font-size:11px;color:#9dbccc;font-weight:900;letter-spacing:.08em;white-space:nowrap}.formulaDeck{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.formulaCard{border:1px solid #28556d;border-radius:12px;padding:11px;background:#07131d}.formulaCard b{display:block;color:#8fb4c7;font-size:10px;letter-spacing:.09em;margin-bottom:5px}.formulaCard strong{display:block;font:1000 20px Consolas,monospace;color:#fff36a}.formulaCard.power{border-color:#744f25;background:#171108}.formulaCard.power strong{color:#ffb35c}.formulaCard.current strong{color:#54e8ff}.formulaCard.voltage strong{color:#ff6a8a}.ohmRefNote{grid-column:1/-1;border-left:4px solid #77ff9c;background:#081b13;border-radius:9px;padding:10px 12px;color:#cce7d8;font-size:12px;line-height:1.45}.ohmRefNote b{color:#77ff9c}@media(max-width:760px){.answerTop{align-items:flex-start}.answerActions{width:100%;min-width:0}.ohmRefGrid{grid-template-columns:1fr}.formulaDeck{grid-template-columns:1fr 1fr}}@media(max-width:470px){.formulaDeck{grid-template-columns:1fr}}
+
+/* v7.4 FOUR-QUADRANT OHM POWER WHEEL */
+.ohmRefGrid{grid-template-columns:1fr!important;max-width:760px;margin:auto}.ohmQuadWheel{width:min(700px,100%);margin:auto;display:grid;grid-template-columns:1fr 1fr;border:3px solid #54e8ff;border-radius:22px;overflow:hidden;background:#050b10;box-shadow:0 0 35px #35e4ff38}.oq{min-height:230px;padding:20px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}.oq:nth-child(1){background:radial-gradient(circle at center,#3b1020,#10070b)}.oq:nth-child(2){background:radial-gradient(circle at center,#073442,#041116)}.oq:nth-child(3){background:radial-gradient(circle at center,#3b3107,#121004)}.oq:nth-child(4){background:radial-gradient(circle at center,#3b2107,#120b04)}.oq:nth-child(1),.oq:nth-child(2){border-bottom:2px solid #54e8ff}.oq:nth-child(1),.oq:nth-child(3){border-right:2px solid #54e8ff}.oq .qLetter{font-size:48px;font-weight:1000;line-height:1;margin-bottom:8px;text-shadow:0 0 18px currentColor}.oq.v .qLetter{color:#ff6688}.oq.i .qLetter{color:#54e8ff}.oq.r .qLetter{color:#fff36a}.oq.p .qLetter{color:#ffad55}.oq .qName{font-size:11px;font-weight:1000;letter-spacing:.15em;color:#b8ceda;margin-bottom:11px}.oq .qFormula{font:1000 18px Consolas,monospace;color:#fff;line-height:1.65;white-space:nowrap}.oq .qFormula strong{color:inherit}.oq.v .qFormula strong{color:#ff91a8}.oq.i .qFormula strong{color:#8ef3ff}.oq.r .qFormula strong{color:#fff68b}.oq.p .qFormula strong{color:#ffc27e}.ohmRefNote{grid-column:auto!important;width:100%;max-width:700px;margin:12px auto 0}.formulaDeck,.ohmWheel{display:none!important}@media(max-width:650px){.ohmQuadWheel{grid-template-columns:1fr}.oq{min-height:190px}.oq:nth-child(1),.oq:nth-child(2),.oq:nth-child(3){border-bottom:2px solid #54e8ff}.oq:nth-child(1),.oq:nth-child(3){border-right:0}.oq .qFormula{font-size:16px}}
+</style>
+</head>
+<body>
+<section id="home" class="screen active"><div class="home"><div class="homeIn">
+<div class="homeHero">
+  <div class="courseLine"><div class="courseBadge">ELECTRICAL TECHNOLOGY</div><div class="courseBadge">INTERACTIVE LEARNING LAB</div></div>
+  <h1>ELT 110 <span class="courseParen">(Circuits I)</span></h1>
+  <div class="trainerTitle">INTERACTIVE CIRCUITS TRAINER</div>
+  <p class="lead">Learn circuits by working them. Adjust real component values, follow electron flow, calculate the circuit yourself, enter your answers, and reveal the solution only when you are ready to check your work.</p>
+  <div class="classStrip"><span class="classChip">DC CIRCUIT ANALYSIS</span><span class="classChip">OHM’S LAW</span><span class="classChip">POWER</span><span class="classChip">SERIES • PARALLEL • COMBINATION</span><span class="classChip">AC FUNDAMENTALS</span></div>
+  <div class="creatorCredit"><div class="creatorMark">Ω</div><div class="creatorText"><b>Developed by the ELT 110 Professor &amp; Program Coordinator</b><span class="role">Electrical Technology • Maysville Community &amp; Technical College</span><span>Original interactive instructional design for Circuits I classroom learning</span></div></div>
+</div>
+<div class="homeSectionLabel">CHOOSE A LEARNING LAB</div>
+<div class="cards">
+<button class="homeCard seriesCard" onclick="openPage('series')"><div class="ico">➖</div><h2>Series DC Circuits</h2><p>One path. Common current. Voltage divides. Five progressive circuits from 1 to 5 resistors.</p></button>
+<button class="homeCard parallelCard" onclick="openPage('parallel')"><div class="ico">⑂</div><h2>Parallel DC Circuits</h2><p>Multiple paths. Common voltage. Current divides. Five progressive circuits from 2 to 6 branches.</p></button>
+<button class="homeCard comboCard" onclick="openPage('combo')"><div class="ico">⚡</div><h2>Combination DC Circuits</h2><p>Fifteen progressive mixed networks, including compact nested circuits that emphasize reading the shape before solving.</p></button>
+<button class="homeCard ohmCard" onclick="openPage('ohms')"><div class="ico">Ω</div><h2>Ohm’s Law Center</h2><p>V, I, R and P relationships, history, intuition, formulas, and a live calculator.</p></button>
+<button class="homeCard dcCard" onclick="openPage('dcbasics')"><div class="ico">⎓</div><h2>DC Basics</h2><p>Polarity, electron flow, sources, measurement, power, history, and practical DC fundamentals.</p></button>
+<button class="homeCard acCard" onclick="openPage('acbasics')"><div class="ico">∿</div><h2>AC Basics</h2><p>Responsive sine waves, frequency, period, RMS, peak, peak-to-peak, phase, history, and AC fundamentals.</p></button>
+<button class="homeCard rcCard" onclick="openPage('rclab')"><div class="ico">RC</div><h2>Resistive-Capacitive AC Circuits</h2><p>Interactive series RC circuit with live impedance, phase, power, power factor, and a dual-trace oscilloscope.</p></button><button class="homeCard rlCard" onclick="openPage('rllab')"><div class="ico">RL</div><h2>Resistive-Inductive AC Circuits</h2><p>Interactive series RL circuit with live inductive reactance, impedance, phase, AC power, power factor, and dual-trace oscilloscope.</p></button><button class="homeCard rclCard" onclick="openPage('rcllab')"><div class="ico">RLC</div><h2>Series RCL AC Circuits</h2><p>Resistance, inductance, and capacitance together: resonance, net reactance, impedance, phase, power factor, voltage magnification, and dual-trace scope.</p></button><button class="homeCard tutorialCard" onclick="openPage('dctutorial')"><div class="ico">▶</div><h2>Animated DC Circuit Tutorials</h2><p>Watch six polished, replayable worked examples: series, parallel, and combination circuits solved step by step.</p></button></div>
+<div class="homeFooter"><strong>Professor-developed for ELT 110 • Circuits I</strong><span>Electrical Technology • Maysville Community &amp; Technical College</span><span>Original interactive classroom learning tool</span></div>
+</div></div></section>
+
+<section id="series" class="screen"></section><section id="parallel" class="screen"></section><section id="combo" class="screen"></section>
+<section id="ohms" class="screen"><div class="top"><b>ELT 110 • OHM'S LAW CENTER</b><span>Voltage • Current • Resistance • Power</span><button class="back" onclick="openPage('home')">⌂ Home</button></div>
+<div class="page"><div class="intro"><h1>Ohm’s Law — the language behind the circuit</h1><p>Voltage is the electrical push, current is the rate of charge flow, and resistance opposes that flow. Change one quantity and the others respond predictably.</p></div>
+<div class="ohmHero"><div class="wheel"><div class="tri"><div class="V">V</div><div class="I">I</div><div class="R">R</div></div></div>
+<div class="ohmContent">
+<div class="history"><h3>A little history</h3><p>Georg Simon Ohm published the relationship between voltage, current, and resistance in the 1820s. The ohm (Ω) later became the SI unit of electrical resistance. For technicians, the importance is practical: the relationship lets us predict what a circuit should do before we ever touch a meter.</p></div>
+<div class="lawCard"><h3>The three core forms</h3><div class="lawEq">I = V ÷ R</div><div class="lawEq">V = I × R</div><div class="lawEq">R = V ÷ I</div><p>Power connects directly: <b>P = V × I</b>, <b>P = I²R</b>, and <b>P = V²/R</b>.</p></div>
+<div class="lawCard"><h3>Live Ohm’s Law calculator</h3><div class="ohmCalc"><label>Voltage (V)<input id="ov" type="number" value="24" min="0" oninput="ohmCalc()"></label><label>Resistance (Ω)<input id="or" type="number" value="40" min=".1" oninput="ohmCalc()"></label><div class="bigAnswer" id="oa"></div></div></div>
+</div></div></div></section>
+
+
+<section id="dcbasics" class="screen"><div class="top"><b>ELT 110 • DC BASICS</b><span>Direct current foundations</span><button class="back" onclick="openPage('home')">⌂ Home</button></div>
+<div class="page basicsPage"><div class="intro"><h1>DC Basics — one direction, clear polarity</h1><p>Direct current maintains a defined polarity and, in the basic model used in ELT 110, charge flow has one direction through the circuit. This page connects the physical idea to voltage, current, resistance, power, sources, meters, and the history of practical DC systems.</p></div>
+<div class="basicsGrid">
+<div class="conceptCard"><div class="conceptIcon">− → +</div><h2>Electron Flow</h2><p>In this trainer we use <b>electron-flow theory</b>: electron motion is shown from the negative terminal toward the positive terminal through the external circuit.</p><div class="miniRail"><i></i><i></i><i></i><i></i><i></i></div></div>
+<div class="conceptCard"><div class="conceptIcon">⎓</div><h2>DC Voltage</h2><p>DC sources have identifiable polarity. Batteries, DC power supplies, photovoltaic sources, and rectified supplies are common examples.</p><div class="pillRow"><span>+ Positive</span><span>− Negative</span><span>VDC</span></div></div>
+<div class="conceptCard"><div class="conceptIcon">W</div><h2>Power</h2><p>Electrical power is the rate of energy transfer. For resistive DC circuits, connect Ohm’s Law to <b>P = VI</b>, <b>P = I²R</b>, and <b>P = V²/R</b>.</p></div>
+<div class="conceptCard"><div class="conceptIcon">🧰</div><h2>Measure It</h2><p>A voltmeter is connected across two points. An ammeter measures current through a path. Resistance is normally measured with the circuit de-energized.</p></div>
+</div>
+<div class="historyBand"><h2>DC pioneers & the rise of electric power</h2><div class="timeline"><div><b>Alessandro Volta</b><span>Early battery development helped make continuous electric current available for experimentation.</span></div><div><b>Michael Faraday</b><span>Electromagnetic induction established a foundation for practical electrical generation.</span></div><div><b>Thomas Edison</b><span>Pearl Street Station began serving customers in New York in 1882 using a DC distribution system.</span></div><div><b>DC today</b><span>Electronics, batteries, solar PV, EV systems, controls, and HVDC transmission keep DC highly relevant.</span></div></div></div>
+<div class="compareBand"><h2>Think like a technician</h2><div class="compareGrid"><div><b>Voltage</b><strong>Electrical potential difference</strong><small>Measured in volts (V)</small></div><div><b>Current</b><strong>Rate of charge flow</strong><small>Measured in amperes (A)</small></div><div><b>Resistance</b><strong>Opposition to current</strong><small>Measured in ohms (Ω)</small></div><div><b>Power</b><strong>Rate of energy transfer</strong><small>Measured in watts (W)</small></div></div></div>
+</div></section>
+
+<section id="acbasics" class="screen"><div class="top"><b>ELT 110 • AC BASICS</b><span>Alternating current foundations</span><button class="back" onclick="openPage('home')">⌂ Home</button></div>
+<div class="page basicsPage"><div class="intro"><h1>AC Basics — magnitude and polarity change with time</h1><p>Alternating voltage and current vary with time and periodically reverse direction. The sine wave below turns frequency, period, RMS, peak, and peak-to-peak voltage into something you can see.</p></div>
+<div class="waveLab"><div class="waveControls"><label>RMS Voltage <input id="acVrms" type="range" min="1" max="240" value="120" oninput="updateAC()"><b id="acVrmsOut">120 V</b></label><label>Frequency <input id="acFreq" type="range" min="1" max="120" value="60" oninput="updateAC()"><b id="acFreqOut">60 Hz</b></label><label>Animation Speed <input id="acSpeed" type="range" min="20" max="180" value="75"><b>visual only</b></label></div>
+<canvas id="acCanvas" width="1000" height="390"></canvas>
+<div class="waveMeters"><div><span>RMS</span><b id="mRms">120.0 V</b></div><div><span>Peak</span><b id="mPeak">169.7 V</b></div><div><span>Peak-to-Peak</span><b id="mPP">339.4 V</b></div><div><span>Frequency</span><b id="mHz">60 Hz</b></div><div><span>Period</span><b id="mPeriod">16.67 ms</b></div></div>
+<div class="waveExplain"><b>For a pure sine wave:</b> V<sub>peak</sub> = V<sub>RMS</sub> × √2 &nbsp; • &nbsp; V<sub>p-p</sub> = 2V<sub>peak</sub> &nbsp; • &nbsp; T = 1/f. RMS is the effective value used to compare the heating effect of AC with DC in a resistive load.</div></div>
+<div class="basicsGrid"><div class="conceptCard"><div class="conceptIcon">f</div><h2>Frequency</h2><p>Frequency is cycles per second, measured in hertz. A 60 Hz waveform completes 60 cycles each second, so one cycle lasts about 16.67 ms.</p></div><div class="conceptCard"><div class="conceptIcon">φ</div><h2>Phase</h2><p>Phase describes angular displacement between waveforms. One complete cycle is 360°. Phase relationships become essential in transformers and polyphase systems.</p></div><div class="conceptCard"><div class="conceptIcon">RMS</div><h2>Effective Value</h2><p>For a sinusoid, RMS equals peak divided by √2. A 120 V RMS sine wave reaches about ±169.7 V peak.</p></div><div class="conceptCard"><div class="conceptIcon">↕</div><h2>Peak-to-Peak</h2><p>Peak-to-peak spans the full excursion from the positive peak to the negative peak: twice the peak value.</p></div></div>
+<div class="historyBand"><h2>AC pioneers & the power-system transition</h2><div class="timeline"><div><b>Michael Faraday</b><span>His work on electromagnetic induction underlies generators and transformers.</span></div><div><b>George Westinghouse</b><span>Built and promoted practical AC power systems and transformer-based distribution.</span></div><div><b>Nikola Tesla</b><span>Polyphase AC and induction-motor work helped establish the architecture of modern AC power systems.</span></div><div><b>1890s</b><span>AC’s ability to transform voltage made efficient long-distance transmission practical and helped it dominate utility distribution.</span></div></div></div>
+</div></section>
+
+<section id="rclab" class="screen"><div class="top"><b>ELT 110 • SERIES RC AC LAB</b><span>Resistance • Capacitive Reactance • Impedance • Phase • Power</span><button class="back" onclick="openPage('home')">⌂ Home</button></div>
+<div class="rcLab"><div class="intro"><h1>Series RC Circuit — see voltage and current separate in phase</h1><p>Change source voltage, frequency, resistance, or capacitance. The circuit, meters, phase relationship, power triangle quantities, and dual-trace oscilloscope respond immediately.</p></div>
+<div class="rcGrid"><div class="rcPanel"><svg class="rcSchematic" viewBox="0 0 755 270"><g transform="translate(55 0)">
+<path class="rcWire" d="M90 55 L205 55 M295 55 L430 55 M430 55 L430 100 M430 160 L430 215 L90 215 M90 55 L90 105 M90 165 L90 215"/>
+<circle cx="90" cy="135" r="31" fill="#071017" stroke="#ff5757" stroke-width="4"/><path d="M68 135 C75 119 82 119 90 135 C98 151 105 151 112 135" fill="none" stroke="#ff5757" stroke-width="3.5" stroke-linecap="round"/>
+<polyline class="rcRes" points="205,55 215,43 230,67 245,43 260,67 275,43 295,55"/><line class="rcCap" x1="400" y1="100" x2="460" y2="100"/><line class="rcCap" x1="400" y1="160" x2="460" y2="160"/>
+<text class="rcSource" text-anchor="end" x="47" y="141" id="rcSvgV">120 VAC</text><text class="rcLabel" x="235" y="31">R1</text><text class="rcVal" x="225" y="91" id="rcSvgR">100 Ω</text><text class="rcLabel" x="475" y="128">C1</text><text class="rcVal" x="475" y="150" id="rcSvgC">20 µF</text>
+<path id="rcElectron" d="M90 215 L430 215 L430 55 L90 55" fill="none" stroke="#54e8ff" stroke-width="2" stroke-dasharray="3 18"><animate attributeName="stroke-dashoffset" from="0" to="-42" dur="1.3s" repeatCount="indefinite"/></path></g></svg>
+<div class="rcControls">
+<label>SOURCE VOLTAGE<input id="rcV" type="range" min="1" max="240" value="120" oninput="updateRC()"><b id="rcVout">120 V RMS</b></label>
+<label>FREQUENCY<input id="rcF" type="range" min="1" max="120" value="60" oninput="updateRC()"><b id="rcFout">60 Hz</b></label>
+<label>RESISTANCE R1<input id="rcR" type="range" min="1" max="1000" value="100" oninput="updateRC()"><b id="rcRout">100 Ω</b></label>
+<label>CAPACITANCE C1<input id="rcC" type="range" min="1" max="200" value="20" oninput="updateRC()"><b id="rcCout">20 µF</b></label></div>
+<div class="rcMeters" id="rcMeters"></div></div>
+<div class="scopeShell"><div class="scopeBrand"><span>ELT 110 DIGITAL STORAGE OSCILLOSCOPE</span><span>DUAL TRACE • AUTO</span></div><div class="scopeScreen"><canvas id="rcScope" width="900" height="390"></canvas></div><div class="scopeLegend"><span class="chV">CH1 — SOURCE VOLTAGE</span><span class="chI">CH2 — CIRCUIT CURRENT</span></div>
+<div class="scopeControlPanel">
+<label><span>TIME / DIV</span><select id="rcTimeDiv" onchange="updateRC()"><option value="0.001">1 ms/div</option><option value="0.002" selected>2 ms/div</option><option value="0.005">5 ms/div</option><option value="0.01">10 ms/div</option><option value="0.02">20 ms/div</option><option value="0.05">50 ms/div</option></select></label>
+<label class="chV"><span>CH1 VOLTS / DIV</span><select id="rcVoltDiv" onchange="updateRC()"><option>5</option><option>10</option><option>20</option><option selected>50</option><option>100</option><option>200</option></select><small>V/div</small></label>
+<label class="chI"><span>CH2 AMPS / DIV</span><select id="rcAmpDiv" onchange="updateRC()"><option value=".01">0.01</option><option value=".02">0.02</option><option value=".05">0.05</option><option value=".1">0.1</option><option value=".2">0.2</option><option value=".5">0.5</option><option value="1" selected>1</option><option value="2">2</option><option value="5">5</option></select><small>A/div</small></label>
+</div>
+<div class="scopeReadout"><span id="scopeTimeRead">2 ms/div</span><span id="scopeVRead" class="chV">CH1 50 V/div</span><span id="scopeIRead" class="chI">CH2 1 A/div</span></div>
+<div class="scopeKnobs"><div class="knob"></div><div class="knob"></div><div class="knob"></div></div></div></div>
+<div class="rcTeach"><div><b>CAPACITIVE REACTANCE</b>XC = 1/(2πfC). Increasing frequency or capacitance lowers XC.</div><div><b>IMPEDANCE</b>|Z| = √(R² + XC²). In a series RC circuit, Z combines resistance with capacitive reactance.</div><div><b>PHASE</b>Current leads source voltage by θ = tan⁻¹(XC/R). The scope makes that lead visible.</div><div><b>POWER</b>True power P = I²R. Apparent power S = VI. Reactive power is capacitive (Q = −I²XC). PF = P/S = cos θ.</div></div></div></section>
+
+<section id="rllab" class="screen"><div class="top"><b>ELT 110 • SERIES RL AC LAB</b><span>Resistance • Inductive Reactance • Impedance • Phase • Power</span><button class="back" onclick="openPage('home')">⌂ Home</button></div>
+<div class="rcLab"><div class="intro"><h1>Series RL Circuit — watch current lag voltage</h1><p>Change source voltage, frequency, resistance, or inductance. The circuit, meters, phase relationship, power quantities, and dual-trace oscilloscope respond immediately.</p></div>
+<div class="rcGrid"><div class="rcPanel"><svg class="rcSchematic" viewBox="0 0 755 270"><g transform="translate(55 0)">
+<path class="rcWire" d="M90 55 L205 55 M295 55 L385 55 M505 55 L505 215 L90 215 M90 55 L90 104 M90 166 L90 215"/>
+<circle cx="90" cy="135" r="31" fill="#071017" stroke="#ff5757" stroke-width="4"/><path d="M68 135 C75 119 82 119 90 135 C98 151 105 151 112 135" fill="none" stroke="#ff5757" stroke-width="3.5" stroke-linecap="round"/>
+<polyline class="rcRes" points="205,55 215,43 230,67 245,43 260,67 275,43 295,55"/>
+<path class="rlInd" d="M385 55 C385 34 415 34 415 55 C415 34 445 34 445 55 C445 34 475 34 475 55 C475 34 505 34 505 55"/>
+<text class="rcSource" text-anchor="end" x="47" y="141" id="rlSvgV">120 VAC</text><text class="rcLabel" x="235" y="31">R1</text><text class="rcVal" x="225" y="91" id="rlSvgR">100 Ω</text><text class="rcLabel" x="431" y="27">L1</text><text class="rcVal" x="415" y="91" id="rlSvgL">100 mH</text>
+<path d="M90 215 L505 215 L505 55 L90 55" fill="none" stroke="#54e8ff" stroke-width="2" stroke-dasharray="3 18"><animate attributeName="stroke-dashoffset" from="0" to="-42" dur="1.3s" repeatCount="indefinite"/></path></g></svg>
+<div class="rcControls">
+<label>SOURCE VOLTAGE<input id="rlV" type="range" min="1" max="240" value="120" oninput="updateRL()"><b id="rlVout">120 V RMS</b></label>
+<label>FREQUENCY<input id="rlF" type="range" min="1" max="120" value="60" oninput="updateRL()"><b id="rlFout">60 Hz</b></label>
+<label>RESISTANCE R1<input id="rlR" type="range" min="1" max="1000" value="100" oninput="updateRL()"><b id="rlRout">100 Ω</b></label>
+<label>INDUCTANCE L1<input id="rlL" type="range" min="1" max="1000" value="100" oninput="updateRL()"><b id="rlLout">100 mH</b></label></div>
+<div class="rcMeters" id="rlMeters"></div></div>
+<div class="scopeShell"><div class="scopeBrand"><span>ELT 110 DIGITAL STORAGE OSCILLOSCOPE</span><span>DUAL TRACE • AUTO</span></div><div class="scopeScreen"><canvas id="rlScope" width="900" height="390"></canvas></div><div class="scopeLegend"><span class="chV">CH1 — SOURCE VOLTAGE</span><span class="chI">CH2 — CIRCUIT CURRENT</span></div>
+<div class="scopeControlPanel"><label><span>TIME / DIV</span><select id="rlTimeDiv" onchange="updateRL()"><option value=".001">1 ms/div</option><option value=".002" selected>2 ms/div</option><option value=".005">5 ms/div</option><option value=".01">10 ms/div</option><option value=".02">20 ms/div</option><option value=".05">50 ms/div</option></select></label>
+<label class="chV"><span>CH1 VOLTS / DIV</span><select id="rlVoltDiv" onchange="updateRL()"><option>5</option><option>10</option><option>20</option><option selected>50</option><option>100</option><option>200</option></select><small>V/div</small></label>
+<label class="chI"><span>CH2 AMPS / DIV</span><select id="rlAmpDiv" onchange="updateRL()"><option value=".01">0.01</option><option value=".02">0.02</option><option value=".05">0.05</option><option value=".1">0.1</option><option value=".2">0.2</option><option value=".5">0.5</option><option value="1" selected>1</option><option value="2">2</option><option value="5">5</option></select><small>A/div</small></label></div>
+<div class="scopeReadout"><span id="rlScopeTime">2 ms/div</span><span id="rlScopeV" class="chV">CH1 50 V/div</span><span id="rlScopeI" class="chI">CH2 1 A/div</span></div><div class="scopeKnobs"><div class="knob"></div><div class="knob"></div><div class="knob"></div></div></div></div>
+<div class="rcTeach"><div><b>INDUCTIVE REACTANCE</b>XL = 2πfL. Increasing frequency or inductance raises XL.</div><div><b>IMPEDANCE</b>|Z| = √(R² + XL²). Resistance and inductive reactance form the series RL impedance.</div><div><b>PHASE</b>Current lags source voltage by θ = tan⁻¹(XL/R). The dual trace makes that lag visible.</div><div><b>POWER</b>True power P = I²R. Apparent power S = VI. Inductive reactive power Q = +I²XL. PF = P/S = cos θ.</div></div></div></section>
+
+<section id="rcllab" class="screen"><div class="top"><b>ELT 110 • SERIES RCL AC LAB</b><span>Resistance • Inductance • Capacitance • Resonance • Power</span><button class="back" onclick="openPage('home')">⌂ Home</button></div>
+<div class="rcLab"><div class="intro"><h1>Series RCL Circuit — tune through resonance</h1><p>Put R, L, and C in one series path. Change source voltage, frequency, resistance, inductance, or capacitance and watch inductive and capacitive reactance oppose one another. At resonance, XL = XC, net reactance approaches zero, impedance is minimum, current is maximum, and power factor approaches 1.</p></div>
+<div class="rcGrid"><div class="rcPanel"><svg class="rcSchematic" viewBox="0 0 755 270"><g transform="translate(55 0)">
+<path class="rcWire" d="M90 55 L175 55 M265 55 L330 55 M450 55 L505 55 M505 55 L505 100 M505 160 L505 215 L90 215 M90 55 L90 104 M90 166 L90 215"/>
+<circle cx="90" cy="135" r="31" fill="#071017" stroke="#ff5757" stroke-width="4"/><path d="M68 135 C75 119 82 119 90 135 C98 151 105 151 112 135" fill="none" stroke="#ff5757" stroke-width="3.5" stroke-linecap="round"/>
+<polyline class="rclRes" points="175,55 185,43 200,67 215,43 230,67 245,43 265,55"/><path class="rclInd" d="M330 55 C330 34 360 34 360 55 C360 34 390 34 390 55 C390 34 420 34 420 55 C420 34 450 34 450 55"/><line class="rclCap" x1="475" y1="100" x2="535" y2="100"/><line class="rclCap" x1="475" y1="160" x2="535" y2="160"/>
+<text class="rcSource" text-anchor="end" x="47" y="141" id="rclSvgV">120 VAC</text><text class="rcLabel" x="205" y="31">R1</text><text class="rcVal" x="190" y="91" id="rclSvgR">100 Ω</text><text class="rcLabel" x="382" y="27">L1</text><text class="rcVal" x="360" y="91" id="rclSvgL">100 mH</text><text class="rcLabel" x="550" y="128">C1</text><text class="rcVal" x="550" y="150" id="rclSvgC">20 µF</text>
+<path d="M90 215 L505 215 L505 55 L90 55" fill="none" stroke="#54e8ff" stroke-width="2" stroke-dasharray="3 18"><animate attributeName="stroke-dashoffset" from="0" to="-42" dur="1.3s" repeatCount="indefinite"/></path></g></svg>
+<div class="rcControls" style="grid-template-columns:repeat(5,1fr)"><label>SOURCE VOLTAGE<input id="rclV" type="range" min="1" max="240" value="120" oninput="updateRCL()"><b id="rclVout">120 V RMS</b></label><label>FREQUENCY<input id="rclF" type="range" min="1" max="240" value="60" oninput="updateRCL()"><b id="rclFout">60 Hz</b></label><label>RESISTANCE R1<input id="rclR" type="range" min="1" max="1000" value="100" oninput="updateRCL()"><b id="rclRout">100 Ω</b></label><label>INDUCTANCE L1<input id="rclL" type="range" min="1" max="1000" value="100" oninput="updateRCL()"><b id="rclLout">100 mH</b></label><label>CAPACITANCE C1<input id="rclC" type="range" min="1" max="200" value="20" oninput="updateRCL()"><b id="rclCout">20 µF</b></label></div>
+<div class="rcMeters" id="rclMeters"></div></div>
+<div class="scopeShell"><div class="scopeBrand"><span>ELT 110 DIGITAL STORAGE OSCILLOSCOPE</span><span>DUAL TRACE • RCL</span></div><div class="scopeScreen"><canvas id="rclScope" width="900" height="390"></canvas></div><div class="scopeLegend"><span class="chV">CH1 — SOURCE VOLTAGE</span><span class="chI">CH2 — CIRCUIT CURRENT</span></div><div class="scopeControlPanel"><label><span>TIME / DIV</span><select id="rclTimeDiv" onchange="updateRCL()"><option value=".001">1 ms/div</option><option value=".002" selected>2 ms/div</option><option value=".005">5 ms/div</option><option value=".01">10 ms/div</option><option value=".02">20 ms/div</option><option value=".05">50 ms/div</option></select></label><label class="chV"><span>CH1 VOLTS / DIV</span><select id="rclVoltDiv" onchange="updateRCL()"><option>5</option><option>10</option><option>20</option><option selected>50</option><option>100</option><option>200</option></select><small>V/div</small></label><label class="chI"><span>CH2 AMPS / DIV</span><select id="rclAmpDiv" onchange="updateRCL()"><option value=".01">0.01</option><option value=".02">0.02</option><option value=".05">0.05</option><option value=".1">0.1</option><option value=".2">0.2</option><option value=".5">0.5</option><option value="1" selected>1</option><option value="2">2</option><option value="5">5</option></select><small>A/div</small></label></div><div class="scopeReadout"><span id="rclScopeTime">2 ms/div</span><span id="rclScopeV" class="chV">CH1 50 V/div</span><span id="rclScopeI" class="chI">CH2 1 A/div</span></div><div class="scopeKnobs"><div class="knob"></div><div class="knob"></div><div class="knob"></div></div></div></div>
+<div class="rcTeach"><div><b>NET REACTANCE</b>X = XL − XC, where XL = 2πfL and XC = 1/(2πfC). Positive X is inductive; negative X is capacitive.</div><div><b>IMPEDANCE</b>|Z| = √(R² + (XL − XC)²). At series resonance the reactive terms cancel and |Z| ≈ R.</div><div><b>RESONANCE</b>f₀ = 1/(2π√LC). At f₀, current is maximum, phase ≈ 0°, and PF ≈ 1. VL and VC can each exceed source voltage even though their phasors cancel.</div><div><b>POWER & PHASE</b>P = I²R, Q = I²(XL−XC), S = VI, PF = P/S. Current lags when XL&gt;XC and leads when XC&gt;XL.</div></div></div></section>
+
+<section id="dctutorial" class="screen"><div class="top"><b>ELT 110 • ANIMATED DC CIRCUIT TUTORIALS</b><span>Watch • Pause • Replay • Learn the solving sequence</span><button class="back" onclick="openPage('home')">⌂ Home</button></div><div class="tutPage"><div class="intro tutHero"><h1>How to Solve DC Circuits — Step by Step</h1><p>Six replayable worked examples. Each presentation follows the same technician workflow: total resistance → total current → circuit/branch voltage → component current → component power → verification.</p><div class="tutNav" id="tutNav"></div></div><div class="tutStage"><div class="tutVisual"><svg id="tutCircuit" class="tutCircuit" viewBox="0 0 700 350"></svg><div class="tutProgress" id="tutProgress"></div><div class="tutStatus"><div><span>TOTAL RESISTANCE</span><b id="tutRT">—</b></div><div><span>TOTAL CURRENT</span><b id="tutIT">—</b></div><div><span>TOTAL POWER</span><b id="tutPT">—</b></div></div><div class="tutCallout" id="tutCallout"><b>WATCH THE CIRCUIT:</b> The diagram will highlight the electrical relationship being solved at each step.</div><div class="tutControls"><button class="tutBtn" onclick="tutPrev()">◀ Previous</button><div class="tutAuto"><button class="tutBtn" id="tutPlay" onclick="tutToggle()">▶ Auto Play</button><button class="tutBtn" onclick="tutRestart()">↻ Replay</button></div><button class="tutBtn" onclick="tutNext()">Next ▶</button></div></div><div class="tutStory"><div class="tutStep" id="tutStep"></div><h2 id="tutTitle"></h2><div class="tutExplain" id="tutExplain"></div><div class="tutEq activeEq" id="tutEq"></div><div class="tutAnswer" id="tutAnswer"></div><div class="tutLayman"><b>PLAIN-ENGLISH VIEW</b><div id="tutLayman"></div></div><div class="tutRule"><b>TECHNICIAN RULE</b><div id="tutRule"></div></div><div class="teach"><b>WHY THIS STEP MATTERS</b><div id="tutWhy"></div></div></div></div></div></section>
+<script>
+const configs={
+series:Array.from({length:5},(_,i)=>({name:`Level ${i+1} • ${i+1} Resistor${i?'s':''}`,n:i+1,desc:i===0?"Start with one load and establish Ohm's Law.":`Follow one current path through ${i+1} resistors. Verify common current and voltage division.`})),
+parallel:Array.from({length:5},(_,i)=>({name:`Level ${i+1} • ${i+2} Parallel Branches`,n:i+2,desc:`Work with ${i+2} branches across the same source. Verify common voltage, branch current, and total current.`})),
+combo:[
+{name:"Level 1 • R1 + (R2 ∥ R3)",topology:"leadParallel",seriesCount:1,branches:[1,1],n:3,desc:"The classic starter: one series resistor feeding two parallel loads."},
+{name:"Level 2 • (R1 + R2) ∥ R3",topology:"parallelStrings",branches:[2,1],n:3,desc:"Two parallel paths, but one branch contains two series resistors."},
+{name:"Level 3 • (R1 + R2) ∥ (R3 + R4)",topology:"parallelStrings",branches:[2,2],n:4,desc:"Two branches, each containing a series string. Branch voltage is common; current is common only within each string."},
+{name:"Level 4 • R1 + (R2 ∥ (R3 + R4))",topology:"leadParallel",seriesCount:1,branches:[1,2],n:4,desc:"A series feeder supplies two branches: one single resistor and one two-resistor series string."},
+{name:"Level 5 • (R1 + R2) + (R3 ∥ R4 ∥ R5)",topology:"leadParallel",seriesCount:2,branches:[1,1,1],n:5,desc:"Two series resistors feed a three-branch parallel section."},
+{name:"Level 6 • R1 + ((R2 + R3) ∥ R4 ∥ (R5 + R6))",topology:"leadParallel",seriesCount:1,branches:[2,1,2],n:6,desc:"Three unequal branch structures: series pair, single resistor, series pair."},
+{name:"Level 7 • (R1 + R2) ∥ R3 ∥ (R4 + R5 + R6)",topology:"parallelStrings",branches:[2,1,3],n:6,desc:"Three parallel paths with one, two, and three series resistors."},
+{name:"Level 8 • (R1 + R2) + ((R3 + R4) ∥ R5 ∥ (R6 + R7 + R8))",topology:"leadParallel",seriesCount:2,branches:[2,1,3],n:8,desc:"Capstone network: a two-resistor series feed and three differently structured parallel branches."},
+{name:"Level 9 • Level 8 with R9 parallel to R8",topology:"level9exact",seriesCount:2,n:9,desc:"Exactly the Level 8 circuit, with one change only: R9 is added directly in parallel with R8."},
+{name:"Level 10 • Level 9 with R10 parallel to R8 and R9",topology:"level10exact",seriesCount:2,n:10,desc:"Exactly the Level 9 circuit, with R10 added directly in parallel with the existing R8–R9 pair."}
+]
+};
+const state={
+series:{level:0,V:24,R:Array.from({length:5},(_,i)=>20*Math.pow(2,i%5))},
+parallel:{level:0,V:24,R:Array.from({length:6},(_,i)=>20*Math.pow(2,i%5))},
+combo:{level:0,V:24,R:Array.from({length:10},(_,i)=>20*Math.pow(2,i%5))}
+};
+const revealed={series:false,parallel:false,combo:false};
+
+
+let rlPhase=0,rlAnim=null;
+function rlData(){let V=+document.getElementById('rlV').value,f=+document.getElementById('rlF').value,R=+document.getElementById('rlR').value,L=+document.getElementById('rlL').value/1000;let Xl=2*Math.PI*f*L,Z=Math.sqrt(R*R+Xl*Xl),I=V/Z,theta=Math.atan2(Xl,R),VR=I*R,VL=I*Xl,P=I*I*R,S=V*I,Q=I*I*Xl,pf=P/S;return{V,f,R,L,Xl,Z,I,theta,VR,VL,P,S,Q,pf};}
+function updateRL(){let d=rlData(),deg=d.theta*180/Math.PI;
+[['rlVout',d.V.toFixed(0)+' V RMS'],['rlFout',d.f.toFixed(0)+' Hz'],['rlRout',d.R.toFixed(0)+' Ω'],['rlLout',(d.L*1000).toFixed(0)+' mH'],['rlSvgV',d.V.toFixed(0)+' VAC'],['rlSvgR',d.R.toFixed(0)+' Ω'],['rlSvgL',(d.L*1000).toFixed(0)+' mH']].forEach(a=>document.getElementById(a[0]).textContent=a[1]);
+let M=(n,v,u,c='')=>`<div class="rcMeter ${c}"><span>${n}</span><b>${v} ${u}</b></div>`;
+document.getElementById('rlMeters').innerHTML=M('INDUCTIVE REACTANCE XL',d.Xl.toFixed(2),'Ω')+M('TOTAL IMPEDANCE |Z|',d.Z.toFixed(2),'Ω')+M('TOTAL CURRENT',d.I.toFixed(3),'A')+M('RESISTOR VOLTAGE VR',d.VR.toFixed(2),'V')+M('INDUCTOR VOLTAGE VL',d.VL.toFixed(2),'V')+M('PHASE ANGLE',deg.toFixed(1),'°','pf')+M('TRUE / REAL POWER P',d.P.toFixed(2),'W','power')+M('REACTIVE POWER Q',d.Q.toFixed(2),'VAR','power')+M('APPARENT POWER S',d.S.toFixed(2),'VA','power')+M('POWER FACTOR',d.pf.toFixed(3)+' LAGGING','','pf')+M('PEAK SOURCE VOLTAGE',(d.V*Math.SQRT2).toFixed(1),'V')+M('PEAK CURRENT',(d.I*Math.SQRT2).toFixed(3),'A');drawRLScope();}
+function drawRLScope(){let c=document.getElementById('rlScope');if(!c)return;let g=c.getContext('2d'),d=rlData(),w=c.width,h=c.height,timeDiv=+document.getElementById('rlTimeDiv').value,vDiv=+document.getElementById('rlVoltDiv').value,aDiv=+document.getElementById('rlAmpDiv').value,cycles=d.f*timeDiv*10,Vpk=d.V*Math.SQRT2,Ipk=d.I*Math.SQRT2,px=h/8,ampV=Vpk/vDiv*px,ampI=Ipk/aDiv*px,mid=h/2,th=d.theta;
+g.clearRect(0,0,w,h);g.fillStyle='#010807';g.fillRect(0,0,w,h);g.save();g.beginPath();g.rect(0,0,w,h);g.clip();for(let i=0;i<=10;i++){g.strokeStyle=i===5?'#3f755d':'#163c2b';g.lineWidth=1;g.beginPath();g.moveTo(i*w/10,0);g.lineTo(i*w/10,h);g.stroke()}for(let j=0;j<=8;j++){g.strokeStyle=j===4?'#3f755d':'#163c2b';g.beginPath();g.moveTo(0,j*h/8);g.lineTo(w,j*h/8);g.stroke()}
+function tr(color,phase,amp){g.strokeStyle=color;g.lineWidth=3;g.shadowColor=color;g.shadowBlur=8;g.beginPath();for(let p=0;p<w;p++){let y=mid-amp*Math.sin(p/w*Math.PI*2*cycles+rlPhase+phase);p?g.lineTo(p,y):g.moveTo(p,y)}g.stroke();g.shadowBlur=0}tr('#ffe45c',0,ampV);tr('#54e8ff',-th,ampI);g.restore();g.font='bold 13px monospace';g.fillStyle='#ffe45c';g.fillText('CH1 V',12,20);g.fillStyle='#54e8ff';g.fillText('CH2 I  LAGS V BY '+(th*180/Math.PI).toFixed(1)+'°',12,39);
+document.getElementById('rlScopeTime').textContent=(timeDiv*1000)+' ms/div';document.getElementById('rlScopeV').textContent='CH1 '+vDiv+' V/div';document.getElementById('rlScopeI').textContent='CH2 '+aDiv+' A/div';}
+function startRL(){if(rlAnim)return;function a(){if(document.getElementById('rllab')?.classList.contains('active')){rlPhase+=.025;drawRLScope()}rlAnim=requestAnimationFrame(a)}a()}
+
+let rcPhase=0,rcAnim=null;
+function rcData(){let V=+document.getElementById('rcV').value,f=+document.getElementById('rcF').value,R=+document.getElementById('rcR').value,C=+document.getElementById('rcC').value*1e-6;let Xc=1/(2*Math.PI*f*C),Z=Math.sqrt(R*R+Xc*Xc),I=V/Z,theta=Math.atan2(Xc,R),VR=I*R,VC=I*Xc,P=I*I*R,S=V*I,Q=-I*I*Xc,pf=P/S;return{V,f,R,C,Xc,Z,I,theta,VR,VC,P,S,Q,pf};}
+function updateRC(){let d=rcData(),deg=d.theta*180/Math.PI;
+document.getElementById('rcVout').textContent=d.V.toFixed(0)+' V RMS';document.getElementById('rcFout').textContent=d.f.toFixed(0)+' Hz';document.getElementById('rcRout').textContent=d.R.toFixed(0)+' Ω';document.getElementById('rcCout').textContent=(d.C*1e6).toFixed(0)+' µF';document.getElementById('rcSvgV').textContent=d.V.toFixed(0)+' VAC';document.getElementById('rcSvgR').textContent=d.R.toFixed(0)+' Ω';document.getElementById('rcSvgC').textContent=(d.C*1e6).toFixed(0)+' µF';
+let M=(n,v,u,c='')=>`<div class="rcMeter ${c}"><span>${n}</span><b>${v} ${u}</b></div>`;
+document.getElementById('rcMeters').innerHTML=M('CAPACITIVE REACTANCE XC',d.Xc.toFixed(2),'Ω')+M('TOTAL IMPEDANCE |Z|',d.Z.toFixed(2),'Ω')+M('TOTAL CURRENT',d.I.toFixed(3),'A')+M('RESISTOR VOLTAGE VR',d.VR.toFixed(2),'V')+M('CAPACITOR VOLTAGE VC',d.VC.toFixed(2),'V')+M('PHASE ANGLE',deg.toFixed(1),'°','pf')+M('TRUE / REAL POWER P',d.P.toFixed(2),'W','power')+M('REACTIVE POWER Q',d.Q.toFixed(2),'VAR','power')+M('APPARENT POWER S',d.S.toFixed(2),'VA','power')+M('POWER FACTOR',d.pf.toFixed(3),'','pf')+M('PEAK SOURCE VOLTAGE',(d.V*Math.SQRT2).toFixed(1),'V')+M('PEAK CURRENT',(d.I*Math.SQRT2).toFixed(3),'A');
+drawRCScope();}
+function drawRCScope(){
+ let c=document.getElementById('rcScope');if(!c)return;
+ let g=c.getContext('2d'),d=rcData(),w=c.width,h=c.height;
+ let timeDiv=+(document.getElementById('rcTimeDiv')?.value||.002);
+ let vDiv=+(document.getElementById('rcVoltDiv')?.value||50);
+ let aDiv=+(document.getElementById('rcAmpDiv')?.value||1);
+ let totalTime=timeDiv*10, cycles=d.f*totalTime;
+ let Vpk=d.V*Math.SQRT2, Ipk=d.I*Math.SQRT2;
+ // Screen has 8 vertical divisions: four divisions from center to top/bottom.
+ // Therefore amplitude in pixels is peak quantity / selected units-per-division.
+ let pxPerVDiv=h/8, ampV=(Vpk/vDiv)*pxPerVDiv, ampI=(Ipk/aDiv)*pxPerVDiv;
+ // Clip traces naturally at screen edges like a real scope when gain is too high.
+ g.clearRect(0,0,w,h);g.fillStyle='#010807';g.fillRect(0,0,w,h);g.save();g.beginPath();g.rect(0,0,w,h);g.clip();
+ g.lineWidth=1;
+ for(let i=0;i<=10;i++){g.strokeStyle=i===5?'#3f755d':'#163c2b';g.beginPath();g.moveTo(i*w/10,0);g.lineTo(i*w/10,h);g.stroke()}
+ for(let j=0;j<=8;j++){g.strokeStyle=j===4?'#3f755d':'#163c2b';g.beginPath();g.moveTo(0,j*h/8);g.lineTo(w,j*h/8);g.stroke()}
+ let mid=h/2,th=d.theta;
+ function trace(color,phase,amp){g.strokeStyle=color;g.lineWidth=3;g.shadowColor=color;g.shadowBlur=8;g.beginPath();for(let px=0;px<w;px++){let y=mid-amp*Math.sin(px/w*Math.PI*2*cycles+rcPhase+phase);px?g.lineTo(px,y):g.moveTo(px,y)}g.stroke();g.shadowBlur=0}
+ trace('#ffe45c',0,ampV);trace('#54e8ff',th,ampI);g.restore();
+ g.font='bold 13px monospace';g.fillStyle='#ffe45c';g.fillText('CH1 V',12,20);g.fillStyle='#54e8ff';g.fillText('CH2 I  LEADS V BY '+(th*180/Math.PI).toFixed(1)+'°',12,39);
+ let tf=timeDiv<.001?timeDiv*1e6+' µs/div':(timeDiv*1000).toFixed(timeDiv<.01?0:0)+' ms/div';
+ let tr=document.getElementById('scopeTimeRead'),vr=document.getElementById('scopeVRead'),ir=document.getElementById('scopeIRead');
+ if(tr)tr.textContent=tf;if(vr)vr.textContent='CH1 '+vDiv+' V/div';if(ir)ir.textContent='CH2 '+aDiv+' A/div';
+}function startRC(){if(rcAnim)return;function a(){if(document.getElementById('rclab')?.classList.contains('active')){rcPhase+=.025;drawRCScope()}rcAnim=requestAnimationFrame(a)}a()}
+
+
+let rclPhase=0,rclAnim=null;
+function rclData(){let V=+document.getElementById('rclV').value,f=+document.getElementById('rclF').value,R=+document.getElementById('rclR').value,L=+document.getElementById('rclL').value/1000,C=+document.getElementById('rclC').value*1e-6;let Xl=2*Math.PI*f*L,Xc=1/(2*Math.PI*f*C),X=Xl-Xc,Z=Math.sqrt(R*R+X*X),I=V/Z,theta=Math.atan2(X,R),VR=I*R,VL=I*Xl,VC=I*Xc,P=I*I*R,Q=I*I*X,S=V*I,pf=P/S,f0=1/(2*Math.PI*Math.sqrt(L*C)),qFactor=Math.sqrt(L/C)/R;return{V,f,R,L,C,Xl,Xc,X,Z,I,theta,VR,VL,VC,P,Q,S,pf,f0,qFactor};}
+function updateRCL(){let d=rclData(),deg=d.theta*180/Math.PI,state=Math.abs(deg)<1?'NEAR RESONANCE':(d.X>0?'INDUCTIVE • CURRENT LAGS':'CAPACITIVE • CURRENT LEADS');[['rclVout',d.V.toFixed(0)+' V RMS'],['rclFout',d.f.toFixed(0)+' Hz'],['rclRout',d.R.toFixed(0)+' Ω'],['rclLout',(d.L*1000).toFixed(0)+' mH'],['rclCout',(d.C*1e6).toFixed(0)+' µF'],['rclSvgV',d.V.toFixed(0)+' VAC'],['rclSvgR',d.R.toFixed(0)+' Ω'],['rclSvgL',(d.L*1000).toFixed(0)+' mH'],['rclSvgC',(d.C*1e6).toFixed(0)+' µF']].forEach(a=>document.getElementById(a[0]).textContent=a[1]);let M=(n,v,u,c='')=>`<div class="rcMeter ${c}"><span>${n}</span><b>${v} ${u}</b></div>`;document.getElementById('rclMeters').innerHTML=M('INDUCTIVE REACTANCE XL',d.Xl.toFixed(2),'Ω')+M('CAPACITIVE REACTANCE XC',d.Xc.toFixed(2),'Ω')+M('NET REACTANCE X',d.X.toFixed(2),'Ω')+M('TOTAL IMPEDANCE |Z|',d.Z.toFixed(2),'Ω')+M('TOTAL CURRENT',d.I.toFixed(3),'A')+M('PHASE ANGLE',deg.toFixed(1),'°','pf')+M('RESISTOR VOLTAGE VR',d.VR.toFixed(2),'V')+M('INDUCTOR VOLTAGE VL',d.VL.toFixed(2),'V')+M('CAPACITOR VOLTAGE VC',d.VC.toFixed(2),'V')+M('TRUE POWER P',d.P.toFixed(2),'W','power')+M('REACTIVE POWER Q',d.Q.toFixed(2),'VAR','power')+M('APPARENT POWER S',d.S.toFixed(2),'VA','power')+M('POWER FACTOR',d.pf.toFixed(3),'','pf')+M('RESONANT FREQUENCY f₀',d.f0.toFixed(2),'Hz','pf')+M('Q FACTOR',d.qFactor.toFixed(2),'','pf')+M('CIRCUIT STATE',state,'','pf');drawRCLScope();}
+function drawRCLScope(){let c=document.getElementById('rclScope');if(!c)return;let g=c.getContext('2d'),d=rclData(),w=c.width,h=c.height,timeDiv=+document.getElementById('rclTimeDiv').value,vDiv=+document.getElementById('rclVoltDiv').value,aDiv=+document.getElementById('rclAmpDiv').value,cycles=d.f*timeDiv*10,Vpk=d.V*Math.SQRT2,Ipk=d.I*Math.SQRT2,px=h/8,ampV=Vpk/vDiv*px,ampI=Ipk/aDiv*px,mid=h/2,th=d.theta;g.clearRect(0,0,w,h);g.fillStyle='#010807';g.fillRect(0,0,w,h);g.save();g.beginPath();g.rect(0,0,w,h);g.clip();for(let i=0;i<=10;i++){g.strokeStyle=i===5?'#3f755d':'#163c2b';g.lineWidth=1;g.beginPath();g.moveTo(i*w/10,0);g.lineTo(i*w/10,h);g.stroke()}for(let j=0;j<=8;j++){g.strokeStyle=j===4?'#3f755d':'#163c2b';g.beginPath();g.moveTo(0,j*h/8);g.lineTo(w,j*h/8);g.stroke()}function tr(color,phase,amp){g.strokeStyle=color;g.lineWidth=3;g.shadowColor=color;g.shadowBlur=8;g.beginPath();for(let p=0;p<w;p++){let y=mid-amp*Math.sin(p/w*Math.PI*2*cycles+rclPhase+phase);p?g.lineTo(p,y):g.moveTo(p,y)}g.stroke();g.shadowBlur=0}tr('#ffe45c',0,ampV);tr('#54e8ff',-th,ampI);g.restore();let deg=th*180/Math.PI,msg=Math.abs(deg)<.5?'IN PHASE • RESONANCE':(deg>0?'I LAGS V BY '+Math.abs(deg).toFixed(1)+'°':'I LEADS V BY '+Math.abs(deg).toFixed(1)+'°');g.font='bold 13px monospace';g.fillStyle='#ffe45c';g.fillText('CH1 V',12,20);g.fillStyle='#54e8ff';g.fillText('CH2 I  '+msg,12,39);document.getElementById('rclScopeTime').textContent=(timeDiv*1000)+' ms/div';document.getElementById('rclScopeV').textContent='CH1 '+vDiv+' V/div';document.getElementById('rclScopeI').textContent='CH2 '+aDiv+' A/div';}
+function startRCL(){if(rclAnim)return;function a(){if(document.getElementById('rcllab')?.classList.contains('active')){rclPhase+=.025;drawRCLScope()}rclAnim=requestAnimationFrame(a)}a()}
+
+function openPage(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='series'||id==='parallel'||id==='combo')renderPage(id);if(id==='ohms')ohmCalc();if(id==='acbasics'){updateAC();startAC()}if(id==='rclab'){updateRC();startRC()}if(id==='rllab'){updateRL();startRL()}if(id==='rcllab'){updateRCL();startRCL()}if(id==='dctutorial'){renderTut()}scrollTo(0,0)}
+function facts(type){if(type==='series')return [["COMMON CURRENT","Current is the same everywhere"],["TOTAL R","RT = R1 + R2 + …"],["VOLTAGE","Source voltage divides"],["CHECK","Σ voltage drops = source"]];
+if(type==='parallel')return [["COMMON VOLTAGE","Every branch sees source voltage"],["TOTAL R","RT is less than the smallest branch"],["CURRENT","Branch currents divide"],["CHECK","IT = I1 + I2 + …"]];
+return [["REDUCE","Solve parallel groups first"],["SERIES AREA","Common current"],["PARALLEL AREA","Common voltage"],["CHECK","Power in = power used"]]}
+function renderPage(type){let c=configs[type][state[type].level], title=type==='series'?'Series DC Circuits':type==='parallel'?'Parallel DC Circuits':'Combination DC Circuits';let fs=facts(type).map(x=>`<div class="fact"><b>${x[0]}</b>${x[1]}</div>`).join('');
+document.getElementById(type).innerHTML=`<div class="top"><b>ELT 110 • ${title.toUpperCase()}</b><span>Interactive DC trainer</span><button class="back" onclick="openPage('home')">⌂ Home</button></div><div class="page"><div class="intro"><div class="sectionBadge">ELT 110 • INTERACTIVE PRACTICE</div><h1>${title}</h1><p>${type==='series'?'A series circuit has one continuous path. Every component carries the same current. Resistance adds, while source voltage is shared among the loads.':type==='parallel'?'A parallel circuit places each branch directly across the source. Voltage is common to every branch; current divides according to branch resistance.':'Combination circuits contain both series and parallel relationships. Recognize sections, reduce them, solve the total circuit, then work backward.'}</p><div class="introGrid">${fs}</div></div><div class="levelTabs">${configs[type].map((x,i)=>`<button class="${i===state[type].level?'active':''}" onclick="setLevel('${type}',${i})">${i+1}</button>`).join('')}</div><div class="intro"><h1 style="font-size:26px">${c.name}</h1><p>${c.desc}</p><div class="solveFirst"><b>TRY IT FIRST:</b> Use the source and resistor values below to calculate the circuit on paper. When you are ready, press <b>REVEAL CALCULATED VALUES</b> to check your work.</div><div class="lab"><div><div class="schemWrap" id="${type}Draw"></div><div class="controlBank" id="${type}Controls"></div><div class="studentAnswers" id="${type}Student"></div></div><div class="side" id="${type}Side"></div></div></div></div>`;draw(type)}
+function setLevel(t,i){state[t].level=i;revealed[t]=false;renderPage(t)}
+function valueBox(t,k,i,label,value,min,max,unit,step){return `<div class="knob ${k==='V'?'sourceKnob':''}"><label>${label}</label><div class="valueControl"><button type="button" aria-label="Decrease ${label}" onclick="stepCircuitValue('${t}','${k}',${i},-${step})">−</button><input type="number" inputmode="decimal" min="${min}" max="${max}" value="${value}" oninput="changeVal('${t}','${k}',${i},this.value,this)"><button type="button" aria-label="Increase ${label}" onclick="stepCircuitValue('${t}','${k}',${i},${step})">+</button></div><div class="valueUnit">${unit}</div></div>`}
+function controlBank(t,n){let h=`<h3>⚙ ADJUST CIRCUIT VALUES</h3><div class="controlGrid">`;h+=valueBox(t,'V',0,'DC SOURCE',state[t].V,0,100,'VOLTS DC',1);for(let i=0;i<n;i++)h+=valueBox(t,'R',i,`R${i+1} RESISTANCE`,state[t].R[i],1,10000,'OHMS (Ω)',1);return h+`</div>`}
+function stepCircuitValue(t,k,i,delta){let cur=k==='V'?state[t].V:state[t].R[i],min=k==='V'?0:1,max=k==='V'?100:10000;let v=Math.max(min,Math.min(max,Number(cur)+Number(delta)));changeVal(t,k,i,v)}
+function ohmReference(){return `<div class="ohmRef"><div class="ohmRefTop"><h3>Ω OHM’S LAW + POWER — FOUR-QUADRANT FORMULA WHEEL</h3><button class="ohmClose" onclick="toggleOhmRef()">✕ CLOSE</button></div><div class="ohmRefGrid"><div class="ohmQuadWheel"><div class="oq v"><div class="qLetter">V</div><div class="qName">VOLTAGE</div><div class="qFormula"><strong>V = I × R</strong><br><strong>V = P ÷ I</strong><br><strong>V = √(P × R)</strong></div></div><div class="oq i"><div class="qLetter">I</div><div class="qName">CURRENT</div><div class="qFormula"><strong>I = V ÷ R</strong><br><strong>I = P ÷ V</strong><br><strong>I = √(P ÷ R)</strong></div></div><div class="oq r"><div class="qLetter">R</div><div class="qName">RESISTANCE</div><div class="qFormula"><strong>R = V ÷ I</strong><br><strong>R = V² ÷ P</strong><br><strong>R = P ÷ I²</strong></div></div><div class="oq p"><div class="qLetter">P</div><div class="qName">POWER</div><div class="qFormula"><strong>P = V × I</strong><br><strong>P = I² × R</strong><br><strong>P = V² ÷ R</strong></div></div></div><div class="ohmRefNote"><b>HOW TO USE IT:</b> Go to the quadrant for the quantity you need to find. Choose the formula that contains the two values you already know. Everything is kept on one screen so you can reference the wheel while solving, then close it to return to the calculated values.</div></div></div>`}
+function toggleOhmRef(){let g=document.querySelector('.answerGate.ohmOpen');if(g){g.classList.remove('ohmOpen');return}let active=document.querySelector('.screen.active .answerGate');if(active)active.classList.add('ohmOpen')}
+function answerPanel(t,meters,teach,formula){return `<div class="answerGate ${revealed[t]?'revealed':''}" id="${t}Gate"><div class="answerTop"><h3>✓ CALCULATED VALUES</h3><div class="answerActions"><button class="revealBtn ${revealed[t]?'hideAns':''}" onclick="toggleAnswers('${t}')">${revealed[t]?'HIDE VALUES':'REVEAL CALCULATED VALUES'}</button><button class="ohmRefBtn" onclick="toggleOhmRef()">Ω OHM'S LAW + POWER FORMULAS</button></div></div><div class="answerHint">${revealed[t]?'Compare each result with your work.':'Answers are hidden so you can solve the circuit first.'}</div>${ohmReference()}<div class="answerBody"><div class="meters">${meters}</div><div class="teach">${teach}</div><div class="formula">${formula}</div></div></div>`}
+function toggleAnswers(t){revealed[t]=!revealed[t];draw(t)}
+function zigH(x1,x2,y){let n=8,l=14,a=11,p=[[x1,y],[x1+l,y]],s=x1+l,e=x2-l,st=(e-s)/n;for(let i=0;i<=n;i++)p.push([s+i*st,y+(i===0||i===n?0:(i%2?a:-a))]);p.push([x2,y]);return p.map(q=>q.join(',')).join(' ')}
+function zigV(x,y1,y2){let n=8,l=14,a=11,p=[[x,y1],[x,y1+l]],s=y1+l,e=y2-l,st=(e-s)/n;for(let i=0;i<=n;i++)p.push([x+(i===0||i===n?0:(i%2?a:-a)),s+i*st]);p.push([x,y2]);return p.map(q=>q.join(',')).join(' ')}
+function ctrl(t,k,i,x,y,label){let v=k==='V'?state[t].V:state[t].R[i];return `<div class="ctrl" style="left:${x}%;top:${y}%"><label>${label}</label><input type="number" min="${k==='V'?0:1}" max="${k==='V'?100:10000}" value="${v}" oninput="changeVal('${t}','${k}',${i},this.value)"><div class="unit">${k==='V'?'VDC':'Ω'}</div></div>`}
+function changeVal(t,k,i,v,el){
+  // Preserve the active editor while redrawing the live circuit.
+  // The old implementation replaced the control bank on every keystroke,
+  // destroying the focused input after the first digit.
+  const raw=v;
+  if(raw==='') return;
+  v=Number(raw);
+  if(!Number.isFinite(v))return;
+  if(k==='V')state[t].V=Math.max(0,Math.min(100,v));
+  else state[t].R[i]=Math.max(1,Math.min(10000,v));
+  revealed[t]=false;
+
+  // Remember which field was active and its selection before draw() rebuilds the DOM.
+  const selStart=el&&typeof el.selectionStart==='number'?el.selectionStart:null;
+  const selEnd=el&&typeof el.selectionEnd==='number'?el.selectionEnd:null;
+  draw(t);
+
+  // Restore focus/caret to the equivalent freshly-rendered field.
+  const bank=document.getElementById(t+'Controls');
+  if(!bank)return;
+  let target;
+  if(k==='V') target=bank.querySelector('.sourceKnob input');
+  else target=bank.querySelectorAll('.knob:not(.sourceKnob) input')[i];
+  if(target){
+    target.focus({preventScroll:true});
+    if(selStart!==null && target.setSelectionRange){
+      const p=Math.min(selStart,target.value.length),q=Math.min(selEnd,target.value.length);
+      try{target.setSelectionRange(p,q)}catch(e){}
+    }
+  }
+}
+
+function dots(id,count=9){let s='';for(let i=0;i<count;i++)s+=`<circle class="electron" r="4"><animateMotion dur="5s" begin="${(-5*i/count).toFixed(2)}s" repeatCount="indefinite"><mpath href="#${id}"/></animateMotion></circle>`;return s}
+function fmt(n,k){if(!Number.isFinite(n))return '—';if(k==='R')return n>=1000?(n/1000).toFixed(2)+' kΩ':n.toFixed(2)+' Ω';if(k==='I')return Math.abs(n)<1?(n*1000).toFixed(1)+' mA':n.toFixed(3)+' A';if(k==='V')return n.toFixed(2)+' V';return Math.abs(n)<1?(n*1000).toFixed(1)+' mW':n.toFixed(2)+' W'}
+function meter(l,v,k,total=false){return `<div class="meter ${total?'total':''}"><span>${l}</span><b>${fmt(v,k)}</b></div>`}
+
+function draw(t){if(t==='series')drawSeries();else if(t==='parallel')drawParallel();else drawCombo()}
+
+function groupedAnswers(totalMeters,groups){
+  return `<div class="answerTotals"><h4>CIRCUIT TOTALS</h4><div class="meters">${totalMeters}</div></div>
+  <div class="answerGroupGrid">${groups.map(g=>`<div class="answerGroup"><h4>${g.title}</h4><div class="meters">${g.meters}</div></div>`).join('')}</div>`
+}
+const studentWork={series:{},parallel:{},combo:{}},correctWork={series:{},parallel:{},combo:{}};
+function saveStudentAnswer(t,k,v){studentWork[t][k]=v}
+function solutionWorkspace(t,R,vals,tot){correctWork[t]={...tot};let fields=[['RT','RT — Total Resistance','Ω'],['IT','IT — Total Current','A'],['PT','PT — Total Power','W']];R.forEach((r,i)=>{let n=i+1;correctWork[t]['ER'+n]=vals[i][1];correctWork[t]['IR'+n]=vals[i][0];correctWork[t]['PR'+n]=vals[i][0]*vals[i][1];fields.push(['ER'+n,`ER${n} — R${n} Voltage`,'V'],['IR'+n,`IR${n} — R${n} Current`,'A'],['PR'+n,`PR${n} — R${n} Power`,'W'])});let el=document.getElementById(t+'Student');if(!el)return;el.innerHTML=`<h3>✎ SOLVE THE CIRCUIT</h3><div class="answerHint">Enter RT, IT, PT and each resistor's voltage, current, and power. Reveal the calculated values when ready to grade your work.</div><div class="studentAnswerGrid">${fields.map(([k,l,u])=>`<div class="studentEntry" data-key="${k}"><label>${l}</label><div class="entryRow"><input type="number" step="any" value="${studentWork[t][k]??''}" oninput="saveStudentAnswer('${t}','${k}',this.value)"><span class="unit">${u}</span></div><div class="answerFeedback"></div></div>`).join('')}</div><div class="checkStrip"><button onclick="checkStudentAnswers('${t}')">CHECK ENTERED VALUES</button><span class="checkSummary" id="${t}CheckSummary">${revealed[t]?'Answers revealed — grading enabled.':'Reveal calculated values to unlock grading.'}</span></div>`;if(revealed[t])setTimeout(()=>checkStudentAnswers(t),0)}
+function checkStudentAnswers(t){let el=document.getElementById(t+'Student');if(!revealed[t]){document.getElementById(t+'CheckSummary').textContent='Reveal calculated values first.';return}let a=0,g=0;el.querySelectorAll('.studentEntry').forEach(c=>{c.classList.remove('correct','incorrect','close');let i=c.querySelector('input'),f=c.querySelector('.answerFeedback'),ans=correctWork[t][c.dataset.key];if(i.value===''){f.textContent='';return}a++;let e=Number(i.value),er=Math.abs(e-ans),tol=Math.max(Math.abs(ans)*.01,.005);if(er<=tol){c.classList.add('correct');f.textContent='✓ CORRECT';g++}else if(er<=Math.max(Math.abs(ans)*.05,.02)){c.classList.add('close');f.textContent='CLOSE • '+fmtAnswer(ans)}else{c.classList.add('incorrect');f.textContent='RECHECK • '+fmtAnswer(ans)}});document.getElementById(t+'CheckSummary').textContent=a?`${g} of ${a} entered values correct (±1%).`:'Enter values above.'}
+function fmtAnswer(v){return Math.abs(v)>=100?v.toFixed(1):Math.abs(v)>=10?v.toFixed(2):v.toFixed(3)}
+function drawSeries(){let t='series',s=state[t],n=configs[t][s.level].n,R=s.R.slice(0,n),RT=R.reduce((a,b)=>a+b,0),I=s.V/RT,W=Math.max(760,180+n*105),left=115,right=W-70,top=125,bottom=370,usable=right-left-80,step=usable/n,parts='';
+for(let i=0;i<n;i++){let a=left+55+i*step,b=a+Math.min(72,step-18),cx=(a+b)/2;parts+=`<polyline class="res" points="${zigH(a,b,top)}"/><text class="svgLabel" text-anchor="middle" x="${cx}" y="${top-27}">R${i+1}</text><text class="componentValue" text-anchor="middle" x="${cx}" y="${top+38}">${R[i]} Ω</text>`}
+let path=`M${left} 280 L${left} ${bottom} L${right} ${bottom} L${right} ${top} L${left} ${top} L${left} 250`;
+let svg=`<svg class="schem" viewBox="0 0 ${W} 480" style="min-width:${W}px"><path class="wire" d="M${left} ${bottom} L${right} ${bottom} L${right} ${top} M${left} ${top} L${right} ${top} M${left} ${top} L${left} 250 M${left} 280 L${left} ${bottom}"/><text class="sourceVoltage" text-anchor="end" x="${left-34}" y="271">${s.V} VDC</text><line class="battery" x1="${left-25}" y1="250" x2="${left+25}" y2="250"/><line class="battery" x1="${left-15}" y1="280" x2="${left+15}" y2="280"/><text class="svgLabel" x="${left+34}" y="256">+</text><text class="svgLabel" x="${left+34}" y="287">−</text><text class="svgLabel" x="${left-58}" y="270">SOURCE</text>${parts}<path id="ep" d="${path}" fill="none" stroke="none"/>${dots('ep',Math.max(4,Math.min(18,Math.round(I*30)+5)))}</svg>`;
+document.getElementById(t+'Draw').innerHTML=svg;document.getElementById(t+'Controls').innerHTML=controlBank(t,n);
+let totals=meter('Total Resistance (RT)',RT,'R',1)+meter('Total Current (IT)',I,'I',1)+meter('Total Power (PT)',s.V*I,'P');
+let groups=R.map((r,i)=>({title:`R${i+1} • ${r} Ω`,meters:meter(`Current IR${i+1}`,I,'I')+meter(`Voltage ER${i+1}`,I*r,'V')+meter(`Power PR${i+1}`,I*I*r,'P')}));
+let ms=groupedAnswers(totals,groups);
+document.getElementById(t+'Side').innerHTML=answerPanel(t,ms,`<b>Series rule:</b> current is common through every resistor. Voltage divides in proportion to resistance. Check yourself: the individual voltage drops should add to ${fmt(s.V,'V')}.`,`<code>RT = R1 + R2 + …</code><br><code>IT = ET / RT</code><br><code>IR1 = IR2 = … = IT</code><br><code>ERn = IT × Rn</code><br><code>PRn = I²R</code>`);solutionWorkspace(t,R,R.map(r=>[I,I*r]),{RT:RT,IT:I,PT:s.V*I})}
+
+function drawParallel(){let t='parallel',s=state[t],n=configs[t][s.level].n,R=s.R.slice(0,n),curr=R.map(r=>s.V/r),IT=curr.reduce((a,b)=>a+b,0),RT=1/R.reduce((a,r)=>a+1/r,0);
+let H=390,left=88,top=72,bottom=322,sourceY1=207,sourceY2=237;
+// Circuit width grows only as branches are added. First branch is spaced from source by the same pitch as all later branches.
+let pitch=108,first=left+pitch,last=first+(n-1)*pitch,right=last,W=right+55,parts='',paths='';
+for(let i=0;i<n;i++){let bx=first+i*pitch,id=`pb${i}`;parts+=`<path class="wire" d="M${bx} ${top} L${bx} 132 M${bx} 262 L${bx} ${bottom}"/><polyline class="res" points="${zigV(bx,132,262)}"/><circle class="node" cx="${bx}" cy="${top}" r="4.5"/><circle class="node" cx="${bx}" cy="${bottom}" r="4.5"/><text class="svgLabel" text-anchor="start" x="${bx+20}" y="187">R${i+1}</text><text class="componentValue" text-anchor="start" x="${bx+20}" y="210">${R[i]} Ω</text>`;paths+=`<path id="${id}" d="M${left} ${sourceY2} L${left} ${bottom} L${bx} ${bottom} L${bx} ${top} L${left} ${top} L${left} ${sourceY1}" fill="none" stroke="none"/>${dots(id,Math.max(3,Math.min(10,Math.round(curr[i]*16)+3)))}`}
+let svg=`<svg class="schem" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"><path class="wire" d="M${left} ${top} L${right} ${top} M${left} ${bottom} L${right} ${bottom} M${left} ${top} L${left} ${sourceY1} M${left} ${sourceY2} L${left} ${bottom}"/><text class="sourceVoltage" text-anchor="end" x="${left-32}" y="${(sourceY1+sourceY2)/2+6}">${s.V} VDC</text><line class="battery" x1="${left-22}" y1="${sourceY1}" x2="${left+22}" y2="${sourceY1}"/><line class="battery" x1="${left-13}" y1="${sourceY2}" x2="${left+13}" y2="${sourceY2}"/><text class="svgLabel" x="${left+30}" y="${sourceY1+6}">+</text><text class="svgLabel" x="${left+30}" y="${sourceY2+7}">−</text>${parts}${paths}</svg>`;
+document.getElementById(t+'Draw').innerHTML=svg;document.getElementById(t+'Controls').innerHTML=controlBank(t,n);
+let totals=meter('Total Resistance (RT)',RT,'R',1)+meter('Total Current (IT)',IT,'I',1)+meter('Total Power (PT)',s.V*IT,'P');
+let groups=R.map((r,i)=>({title:`R${i+1} • ${r} Ω`,meters:meter(`Current IR${i+1}`,curr[i],'I')+meter(`Voltage ER${i+1}`,s.V,'V')+meter(`Power PR${i+1}`,s.V*curr[i],'P')}));
+let ms=groupedAnswers(totals,groups);
+document.getElementById(t+'Side').innerHTML=answerPanel(t,ms,`<b>Parallel rule:</b> every branch terminates on the same two rails. Branches are drawn on a constant pitch so the schematic grows naturally as components are added.`,`<code>1/RT = 1/R1 + 1/R2 + …</code><br><code>ER1 = ER2 = … = ET</code><br><code>IRn = ET / Rn</code><br><code>IT = I1 + I2 + …</code>`);solutionWorkspace(t,R,R.map((r,i)=>[curr[i],s.V]),{RT:RT,IT:IT,PT:s.V*IT})}
+
+function drawNestedCombo(cfg){
+ let t='combo',s=state[t],R=s.R.slice(0,cfg.n),V=s.V,vals={},RT,IT,PT;
+ const pEq=arr=>1/arr.reduce((q,r)=>q+1/r,0);
+ const tailIds=cfg.topology==='level10exact'?[7,8,9]:[7,8];
+
+ // SAME electrical structure as Level 8:
+ // R1 + R2 + [(R3+R4) || R5 || (R6+R7+(R8||R9[||R10]))]
+ let tailR=pEq(tailIds.map(i=>R[i]));
+ let b1=R[2]+R[3], b2=R[4], b3=R[5]+R[6]+tailR;
+ let Rp=pEq([b1,b2,b3]);
+ RT=R[0]+R[1]+Rp; IT=V/RT; PT=V*IT;
+ let Ep=IT*Rp, I1=Ep/b1, I2=Ep/b2, I3=Ep/b3, Etail=I3*tailR;
+ vals[0]=[IT,IT*R[0]]; vals[1]=[IT,IT*R[1]];
+ vals[2]=[I1,I1*R[2]]; vals[3]=[I1,I1*R[3]];
+ vals[4]=[I2,I2*R[4]];
+ vals[5]=[I3,I3*R[5]]; vals[6]=[I3,I3*R[6]];
+ tailIds.forEach(id=>vals[id]=[Etail/R[id],Etail]);
+
+ // Copy Level 8's visual grammar exactly: R1/R2 series feed + three vertical branches.
+ let H=455,left=72,top=62,bottom=389,sy1=230,sy2=260,feedX=132,parts='';
+ let cursor=feedX;
+ [0,1].forEach((rid,i)=>{let ra=cursor,rb=cursor+58,c=(ra+rb)/2;parts+=`<polyline class="res" points="${zigH(ra,rb,top)}"/><text class="svgLabel" text-anchor="middle" x="${c}" y="${top-18}">R${rid+1}</text><text class="componentValue" text-anchor="middle" x="${c}" y="${top+28}">${R[rid]}Ω</text>`;cursor=rb;if(i===0){parts+=`<path class="wire" d="M${cursor} ${top} L${cursor+28} ${top}"/>`;cursor+=28}});
+ let railL=cursor+32, pitch=165, xA=railL+95,xB=xA+pitch,xC=xB+pitch,railR=xC,W=railR+90;
+ parts+=`<path class="wire" d="M${cursor} ${top} L${railL} ${top} M${railL} ${top} L${railR} ${top} M${left} ${bottom} L${railR} ${bottom}"/>`;
+
+ function vres(rid,x,y1,y2){
+   let c=(y1+y2)/2;
+   return `<polyline class="res" points="${zigV(x,y1,y2)}"/><text class="svgLabel" x="${x+17}" y="${c-2}">R${rid+1}</text><text class="componentValue" x="${x+17}" y="${c+18}">${R[rid]}Ω</text>`;
+ }
+ // Branch 1: R3 + R4, exactly like Level 8
+ parts+=`<circle class="node" cx="${xA}" cy="${top}" r="5"/><path class="wire" d="M${xA} ${top} L${xA} 105"/>${vres(2,xA,105,153)}<path class="wire" d="M${xA} 153 L${xA} 205"/>${vres(3,xA,205,253)}<path class="wire" d="M${xA} 253 L${xA} ${bottom}"/><circle class="node" cx="${xA}" cy="${bottom}" r="5"/>`;
+ // Branch 2: R5, exactly like Level 8
+ parts+=`<circle class="node" cx="${xB}" cy="${top}" r="5"/><path class="wire" d="M${xB} ${top} L${xB} 170"/>${vres(4,xB,170,218)}<path class="wire" d="M${xB} 218 L${xB} ${bottom}"/><circle class="node" cx="${xB}" cy="${bottom}" r="5"/>`;
+ // Branch 3: R6 + R7 + R8 from Level 8, with ONLY R8 expanded sideways into parallel R8/R9(/R10)
+ parts+=`<circle class="node" cx="${xC}" cy="${top}" r="5"/><path class="wire" d="M${xC} ${top} L${xC} 92"/>${vres(5,xC,92,136)}<path class="wire" d="M${xC} 136 L${xC} 166"/>${vres(6,xC,166,210)}<path class="wire" d="M${xC} 210 L${xC} 240"/>`;
+ let tailXs=tailIds.length===2?[xC-34,xC+34]:[xC-52,xC,xC+52];
+ let splitY=240,joinY=342;
+ parts+=`<path class="wire" d="M${tailXs[0]} ${splitY} L${tailXs[tailXs.length-1]} ${splitY} M${tailXs[0]} ${joinY} L${tailXs[tailXs.length-1]} ${joinY}"/>`;
+ tailIds.forEach((rid,k)=>{let tx=tailXs[k];parts+=`<path class="wire" d="M${tx} ${splitY} L${tx} 260"/>${vres(rid,tx,260,310)}<path class="wire" d="M${tx} 310 L${tx} ${joinY}"/>`;});
+ parts+=`<circle class="node" cx="${xC}" cy="${splitY}" r="5"/><path class="wire" d="M${xC} ${joinY} L${xC} ${bottom}"/><circle class="node" cx="${xC}" cy="${bottom}" r="5"/>`;
+
+ let svg=`<svg class="schem" viewBox="0 0 ${W} ${H}" style="min-width:${W}px">
+ <path class="wire" d="M${left} ${top} L${feedX} ${top} M${left} ${top} L${left} ${sy1} M${left} ${sy2} L${left} ${bottom}"/>
+ <text class="sourceVoltage" text-anchor="end" x="${left-34}" y="${sy1+25}">${V} VDC</text>
+ <line class="battery" x1="${left-25}" y1="${sy1}" x2="${left+25}" y2="${sy1}"/><line class="battery" x1="${left-15}" y1="${sy2}" x2="${left+15}" y2="${sy2}"/>
+ <text class="svgLabel" x="${left+34}" y="${sy1+6}">+</text><text class="svgLabel" x="${left+34}" y="${sy2+7}">−</text>${parts}</svg>`;
+ document.getElementById(t+'Draw').innerHTML=svg;
+ document.getElementById(t+'Controls').innerHTML=controlBank(t,cfg.n);
+ let totals=meter('Parallel Equivalent',Rp,'R',1)+meter('Total Resistance',RT,'R',1)+meter('Total Current',IT,'I',1)+meter('Total Power',PT,'P');
+ let cards=R.map((r,i)=>{let [cur,ev]=vals[i];return {title:`R${i+1} • ${r} Ω`,meters:meter(`Current IR${i+1}`,cur,'I')+meter(`Voltage ER${i+1}`,ev,'V')+meter(`Power PR${i+1}`,cur*ev,'P')}});
+ document.getElementById(t+'Side').innerHTML=answerPanel(t,groupedAnswers(totals,cards),
+ `<b>Level 8 plus one change:</b> ${cfg.topology==='level10exact'?'R8, R9 and R10 are parallel.':'R9 is directly parallel with R8.'} Everything before that subgroup remains the same as Circuit 8.`,
+ `<code>1) Reduce ${cfg.topology==='level10exact'?'R8 ∥ R9 ∥ R10':'R8 ∥ R9'}</code><br><code>2) Add R6 + R7</code><br><code>3) Combine with the R3+R4 branch and R5 branch</code><br><code>4) Add R1 + R2</code>`);
+ solutionWorkspace(t,R,R.map((r,i)=>vals[i]),{RT:RT,IT:IT,PT:PT});
+
+}
+function drawCompactNested(cfg){
+ let t='combo',s=state[t],R=s.R.slice(0,cfg.n),V=s.V,p=cfg.pattern,vals={},RT,IT,PT;
+ const par=(...a)=>1/a.reduce((q,r)=>q+1/r,0), set=(i,I,E)=>vals[i]=[I,E];
+ let note='',formula='';
+ if(p===11){let r45=par(R[3],R[4]),b=R[2]+r45,rpar=par(R[1],b);RT=R[0]+rpar;IT=V/RT;let Ep=IT*rpar,I2=Ep/R[1],Ib=Ep/b,Et=Ib*r45;set(0,IT,IT*R[0]);set(1,I2,Ep);set(2,Ib,Ib*R[2]);set(3,Et/R[3],Et);set(4,Et/R[4],Et);note='Work from the deepest pair outward: R4 ∥ R5, then + R3, then ∥ R2, then + R1.';formula='R45 → R3+R45 → R2 ∥ branch → +R1';}
+ if(p===12){let a=par(R[0],R[1]),b45=R[3]+R[4],b=par(R[2],b45);RT=a+b;IT=V/RT;let Ea=IT*a,Eb=IT*b;set(0,Ea/R[0],Ea);set(1,Ea/R[1],Ea);set(2,Eb/R[2],Eb);let Ib=Eb/b45;set(3,Ib,Ib*R[3]);set(4,Ib,Ib*R[4]);note='Reduce the left parallel pair and the right mixed parallel group separately; those two equivalents are then in series.';formula='R12 + [R3 ∥ (R4+R5)]';}
+ if(p===13){let r34=par(R[2],R[3]),b=R[1]+r34;RT=par(R[0],b);IT=V/RT;set(0,V/R[0],V);let Ib=V/b,Et=Ib*r34;set(1,Ib,Ib*R[1]);set(2,Et/R[2],Et);set(3,Et/R[3],Et);note='The whole source sees two branches. One is R1 alone; the other contains R2 in series with the nested R3 ∥ R4 pair.';formula='R1 ∥ [R2 + (R3 ∥ R4)]';}
+ if(p===14){let a=par(R[1],R[2]),b=par(R[3],R[4]);RT=R[0]+a+b;IT=V/RT;let Ea=IT*a,Eb=IT*b;set(0,IT,IT*R[0]);set(1,Ea/R[1],Ea);set(2,Ea/R[2],Ea);set(3,Eb/R[3],Eb);set(4,Eb/R[4],Eb);note='After R1, current splits and rejoins twice. Reduce each parallel window, then add the three series equivalents.';formula='R1 + (R2 ∥ R3) + (R4 ∥ R5)';}
+ if(p===15){let r23=par(R[1],R[2]),a=R[0]+r23,b=R[3]+R[4];RT=par(a,b);IT=V/RT;let Ia=V/a,Ib=V/b,Et=Ia*r23;set(0,Ia,Ia*R[0]);set(1,Et/R[1],Et);set(2,Et/R[2],Et);set(3,Ib,Ib*R[3]);set(4,Ib,Ib*R[4]);note='Identify the two large source-to-source branches first. Then solve the nested R2 ∥ R3 pair inside the upper branch.';formula='[R1 + (R2 ∥ R3)] ∥ (R4 + R5)';}
+ PT=V*IT;
+ const wire='stroke="#84eaff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"', res=(i,x,y,vert=false)=>vert?`<polyline class="res" points="${zigV(x,y-30,y+30)}"/><text class="svgLabel" x="${x+18}" y="${y-3}">R${i+1}</text><text class="componentValue" x="${x+18}" y="${y+17}">${R[i]}Ω</text>`:`<polyline class="res" points="${zigH(x-35,x+35,y)}"/><text class="svgLabel" text-anchor="middle" x="${x}" y="${y-18}">R${i+1}</text><text class="componentValue" text-anchor="middle" x="${x}" y="${y+28}">${R[i]}Ω</text>`;
+ let body='';
+ // v7.0: Levels 11–15 redrawn in standard closed-loop / rectangular network form.
+ // Every branch terminates on explicit junction nodes; no decorative or implied connections.
+ if(p===11) body=`
+ <path ${wire} d="M90 70 H145 M215 70 H285 M285 70 V120 M285 120 H340 M410 120 H485 M285 120 V285 H340 M410 285 H455 M455 285 V205 M455 205 H510 M580 205 H625 M455 285 V365 H510 M580 365 H625 M625 205 V365 M625 285 H680 V330 H90"/>
+ <circle class="node" cx="285" cy="120" r="5"/><circle class="node" cx="455" cy="285" r="5"/><circle class="node" cx="625" cy="285" r="5"/><circle class="node" cx="680" cy="330" r="5"/>
+ ${res(0,180,70)}${res(1,375,120)}${res(2,375,285)}${res(3,545,205)}${res(4,545,365)}`;
+ if(p===12) body=`
+ <path ${wire} d="M90 70 H155 V120 M155 120 H210 M280 120 H335 M155 220 H210 M280 220 H335 M155 120 V220 M335 120 V220 M335 170 H410 V120 M410 120 H465 M535 120 H610 M410 120 V270 H465 M535 270 H570 M570 270 H625 M695 270 H720 M610 120 V270 M720 270 V330 H90"/>
+ <circle class="node" cx="155" cy="170" r="5"/><circle class="node" cx="335" cy="170" r="5"/><circle class="node" cx="410" cy="170" r="5"/><circle class="node" cx="610" cy="170" r="5"/>
+ ${res(0,245,120)}${res(1,245,220)}${res(2,500,120)}${res(3,500,270)}${res(4,660,270)}`;
+ if(p===13) body=`
+ <path ${wire} d="M90 70 H155 V120 M155 120 H225 M295 120 H650 M155 120 V275 H225 M295 275 H365 M365 275 V220 M365 220 H420 M490 220 H570 M365 275 V340 H420 M490 340 H570 M570 220 V340 M570 280 H650 M650 120 V330 H90"/>
+ <circle class="node" cx="155" cy="120" r="5"/><circle class="node" cx="365" cy="275" r="5"/><circle class="node" cx="570" cy="280" r="5"/><circle class="node" cx="650" cy="120" r="5"/>
+ ${res(0,260,120)}${res(1,260,275)}${res(2,455,220)}${res(3,455,340)}`;
+ if(p===14) body=`
+ <path ${wire} d="M90 70 H145 M215 70 H275 V120 M275 120 H330 M400 120 H455 M275 220 H330 M400 220 H455 M275 120 V220 M455 120 V220 M455 170 H515 V120 M515 120 H570 M640 120 H695 M515 220 H570 M640 220 H695 M515 120 V220 M695 120 V220 M695 170 V330 H90"/>
+ <circle class="node" cx="275" cy="170" r="5"/><circle class="node" cx="455" cy="170" r="5"/><circle class="node" cx="515" cy="170" r="5"/><circle class="node" cx="695" cy="170" r="5"/>
+ ${res(0,180,70)}${res(1,365,120)}${res(2,365,220)}${res(3,605,120)}${res(4,605,220)}`;
+ if(p===15) body=`
+ <path ${wire} d="M90 70 H155 V115 M155 115 H210 M280 115 H345 M345 115 V165 M345 165 H400 M470 165 H555 M345 115 V255 H400 M470 255 H555 M555 165 V255 M555 210 H650 M155 115 V315 H210 M280 315 H400 M470 315 H650 M650 210 V315 M650 210 V330 H90"/>
+ <circle class="node" cx="155" cy="115" r="5"/><circle class="node" cx="345" cy="115" r="5"/><circle class="node" cx="555" cy="210" r="5"/><circle class="node" cx="650" cy="210" r="5"/>
+ ${res(0,245,115)}${res(1,435,165)}${res(2,435,255)}${res(3,245,315)}${res(4,435,315)}`;
+ let svg=`<svg class="schem" viewBox="0 0 760 400"><path ${wire} d="M90 70 V210 M90 250 V330"/><text class="sourceVoltage" text-anchor="end" x="55" y="236">${V} VDC</text><line class="battery" x1="65" y1="210" x2="115" y2="210"/><line class="battery" x1="75" y1="250" x2="105" y2="250"/><text class="svgLabel" x="120" y="216">+</text><text class="svgLabel" x="120" y="257">−</text>${body}</svg>`;
+ document.getElementById(t+'Draw').innerHTML=svg;document.getElementById(t+'Controls').innerHTML=controlBank(t,cfg.n);
+ let totals=meter('Total Resistance',RT,'R',1)+meter('Total Current',IT,'I',1)+meter('Total Power',PT,'P');
+ let cards=R.map((r,i)=>{let [cur,ev]=vals[i];return {title:`R${i+1} • ${r} Ω`,meters:meter(`Current IR${i+1}`,cur,'I')+meter(`Voltage ER${i+1}`,ev,'V')+meter(`Power PR${i+1}`,cur*ev,'P')}});
+ document.getElementById(t+'Side').innerHTML=answerPanel(t,groupedAnswers(totals,cards),`<b>Read the shape before calculating:</b> ${note}`,`<code>${formula}</code><br><code>IT = ET / RT</code><br><code>Verify: ΣP = ET × IT</code>`);
+ solutionWorkspace(t,R,R.map((r,i)=>vals[i]),{RT,IT,PT});
+}function drawCombo(){let t='combo' ,s=state[t],cfg=configs[t][s.level];if(cfg.topology==='level9exact'||cfg.topology==='level10exact')return drawNestedCombo(cfg);if(cfg.topology==='compactNested')return drawCompactNested(cfg);let R=s.R.slice(0,cfg.n),lead=cfg.topology==='leadParallel'?(cfg.seriesCount||0):0,idx=0,leadIds=[];
+for(let i=0;i<lead;i++)leadIds.push(idx++);
+let branchData=cfg.branches.map(len=>{let ids=[];for(let k=0;k<len;k++)ids.push(idx++);return {ids,R:ids.reduce((sum,i)=>sum+R[i],0)}});
+let Rp=1/branchData.reduce((sum,b)=>sum+1/b.R,0),Rs=leadIds.reduce((sum,i)=>sum+R[i],0),RT=Rs+Rp,IT=s.V/RT;
+let leadDrops=leadIds.map(i=>IT*R[i]),Ep=s.V-leadDrops.reduce((a,b)=>a+b,0),branchI=branchData.map(b=>Ep/b.R);
+let H=410,left=72,top=62,bottom=344,sy1=215,sy2=245,feedX=132,parts='',paths='';
+// Series feed resistors are laid left-to-right with explicit wire between every element.
+let cursor=feedX;
+leadIds.forEach((rid,i)=>{let ra=cursor,rb=cursor+58,c=(ra+rb)/2;parts+=`<polyline class="res" points="${zigH(ra,rb,top)}"/><text class="svgLabel" text-anchor="middle" x="${c}" y="${top-18}">R${rid+1}</text><text class="componentValue" text-anchor="middle" x="${c}" y="${top+28}">${R[rid]}Ω</text>`;cursor=rb;if(i<leadIds.length-1){parts+=`<path class="wire" d="M${cursor} ${top} L${cursor+28} ${top}"/>`;cursor+=28}});
+let railL=leadIds.length?cursor+32:feedX+22,branchPitch=150,firstBranch=railL+branchPitch*.58,lastBranch=firstBranch+(branchData.length-1)*branchPitch,railR=lastBranch,W=railR+65;
+// Explicit source/feed/bus connectivity: no implied gaps, no dangling right-hand rail.
+let base=`<path class="wire" d="M${left} ${top} L${feedX} ${top} M${left} ${top} L${left} ${sy1} M${left} ${sy2} L${left} ${bottom} L${railR} ${bottom} M${railL} ${top} L${railR} ${top}"/>`;
+if(leadIds.length) parts+=`<path class="wire" d="M${cursor} ${top} L${railL} ${top}"/>`; else parts+=`<path class="wire" d="M${feedX} ${top} L${railL} ${top}"/>`;
+branchData.forEach((br,j)=>{let bx=firstBranch+j*branchPitch,id=`mix${j}`,len=br.ids.length,innerTop=112,innerBottom=298,slot=(innerBottom-innerTop)/len,currentY=top;
+parts+=`<circle class="node" cx="${bx}" cy="${top}" r="5"/><circle class="node" cx="${bx}" cy="${bottom}" r="5"/>`;
+br.ids.forEach((rid,k)=>{let center=innerTop+slot*(k+.5),half=Math.min(24,slot*.28),ra=center-half,rb=center+half;parts+=`<path class="wire" d="M${bx} ${currentY} L${bx} ${ra}"/><polyline class="res" points="${zigV(bx,ra,rb)}"/><text class="svgLabel" x="${bx+17}" y="${center-2}">R${rid+1}</text><text class="componentValue" x="${bx+17}" y="${center+14}">${R[rid]}Ω</text>`;currentY=rb});
+parts+=`<path class="wire" d="M${bx} ${currentY} L${bx} ${bottom}"/>`;
+paths+=`<path id="${id}" d="M${left} ${sy2} L${left} ${bottom} L${bx} ${bottom} L${bx} ${top} L${left} ${top} L${left} ${sy1}" fill="none" stroke="none"/>${dots(id,Math.max(3,Math.min(9,Math.round(branchI[j]*13)+3)))}`});
+let svg=`<svg class="schem" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${base}<text class="sourceVoltage" text-anchor="end" x="${left-32}" y="${(sy1+sy2)/2+6}">${s.V} VDC</text><line class="battery" x1="${left-22}" y1="${sy1}" x2="${left+22}" y2="${sy1}"/><line class="battery" x1="${left-13}" y1="${sy2}" x2="${left+13}" y2="${sy2}"/><text class="svgLabel" x="${left+29}" y="${sy1+6}">+</text><text class="svgLabel" x="${left+29}" y="${sy2+7}">−</text>${parts}${paths}</svg>`;
+document.getElementById(t+'Draw').innerHTML=svg;document.getElementById(t+'Controls').innerHTML=controlBank(t,cfg.n);
+let totals=meter('Parallel Equivalent',Rp,'R')+meter('Total Resistance',RT,'R',1)+meter('Total Current',IT,'I',1)+meter('Parallel Network V',Ep,'V')+meter('Total Power',s.V*IT,'P');
+let groupMap={};
+leadIds.forEach((rid,i)=>{groupMap[rid]={title:`R${rid+1} • ${R[rid]} Ω • SERIES FEED`,meters:meter(`Current IR${rid+1}`,IT,'I')+meter(`Voltage ER${rid+1}`,leadDrops[i],'V')+meter(`Power PR${rid+1}`,IT*leadDrops[i],'P')}});
+branchData.forEach((br,j)=>br.ids.forEach(rid=>{let cur=branchI[j],ev=cur*R[rid];groupMap[rid]={title:`R${rid+1} • ${R[rid]} Ω • BRANCH ${j+1}`,meters:meter(`Current IR${rid+1}`,cur,'I')+meter(`Voltage ER${rid+1}`,ev,'V')+meter(`Power PR${rid+1}`,ev*cur,'P')}}));
+let groups=Object.keys(groupMap).sort((a,b)=>a-b).map(k=>groupMap[k]),ms=groupedAnswers(totals,groups);
+document.getElementById(t+'Side').innerHTML=answerPanel(t,ms,`<b>Read the drawing:</b> each complete vertical path connects the same top and bottom buses, so those paths are parallel. Two or more resistors stacked in one vertical path are series within that branch. Any resistor before the top bus is series with the entire parallel network.`,`<code>Rbranch = ΣR in that branch</code><br><code>1/RP = Σ(1/Rbranch)</code><br><code>RT = Rseries-feed + RP</code><br><code>IT = ET / RT</code><br><code>Ibranch = Eparallel / Rbranch</code>`);let sv=R.map(()=>[0,0]);leadIds.forEach((rid,i)=>sv[rid]=[IT,leadDrops[i]]);branchData.forEach((br,j)=>br.ids.forEach(rid=>sv[rid]=[branchI[j],branchI[j]*R[rid]]));solutionWorkspace(t,R,sv,{RT:RT,IT:IT,PT:s.V*IT})}
+let acPhase=0,acRAF=0;
+function updateAC(){
+  let v=Number(document.getElementById('acVrms')?.value||120),
+      f=Number(document.getElementById('acFreq')?.value||60),
+      pk=v*Math.SQRT2;
+  for(const [id,val] of [
+    ['acVrmsOut',v.toFixed(0)+' V'],['acFreqOut',f.toFixed(0)+' Hz'],
+    ['mRms',v.toFixed(1)+' V'],['mPeak',pk.toFixed(1)+' V'],
+    ['mPP',(2*pk).toFixed(1)+' V'],['mHz',f.toFixed(0)+' Hz'],
+    ['mPeriod',(1000/f).toFixed(2)+' ms']
+  ]){let e=document.getElementById(id);if(e)e.textContent=val}
+}
+function startAC(){
+  if(acRAF)return;
+  const loop=()=>{
+    let c=document.getElementById('acCanvas');
+    if(!c||!document.getElementById('acbasics').classList.contains('active')){acRAF=0;return}
+    let ctx=c.getContext('2d'),w=c.width,h=c.height,mid=h/2,
+        v=Number(document.getElementById('acVrms').value),
+        f=Number(document.getElementById('acFreq').value),
+        spd=Number(document.getElementById('acSpeed').value),
+        pk=v*Math.SQRT2;
+
+    // VOLTAGE -> AMPLITUDE. 240 Vrms reaches near full graph height; lower voltage visibly shrinks.
+    const maxVrms=240, maxAmp=h*.38, amp=Math.max(2,(v/maxVrms)*maxAmp);
+
+    // FREQUENCY -> HORIZONTAL COMPRESSION. 60 Hz = 2 cycles; frequency changes cycles proportionally.
+    // This is a fixed-time-window display, so higher Hz packs more cycles into the same width.
+    const cycles=Math.max(.15,2*(f/60));
+
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle='#17394d';ctx.lineWidth=1;
+    for(let gx=0;gx<w;gx+=50){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,h);ctx.stroke()}
+    for(let gy=20;gy<h;gy+=40){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(w,gy);ctx.stroke()}
+    ctx.strokeStyle='#9ab1c4';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,mid);ctx.lineTo(w,mid);ctx.stroke();
+
+    // RMS guides move with voltage-derived amplitude.
+    ctx.setLineDash([9,8]);ctx.strokeStyle='#ffe05f';
+    for(let yy of [mid-amp*.707,mid+amp*.707]){ctx.beginPath();ctx.moveTo(0,yy);ctx.lineTo(w,yy);ctx.stroke()}
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle='#35e4ff';ctx.lineWidth=4;ctx.shadowBlur=12;ctx.shadowColor='#35e4ff';
+    ctx.beginPath();
+    for(let px=0;px<=w;px++){
+      let y=mid-amp*Math.sin((px/w)*Math.PI*2*cycles+acPhase);
+      px?ctx.lineTo(px,y):ctx.moveTo(px,y)
+    }
+    ctx.stroke();ctx.shadowBlur=0;
+
+    // Keep labels readable even at very low voltage.
+    ctx.fillStyle='#ffe05f';ctx.font='bold 16px Segoe UI';
+    if(amp>34){
+      ctx.fillText('+Vpeak',12,Math.max(18,mid-amp-7));
+      ctx.fillText('+VRMS',12,mid-amp*.707-7);
+      ctx.fillText('−VRMS',12,mid+amp*.707+18);
+      ctx.fillText('−Vpeak',12,Math.min(h-7,mid+amp+20));
+    }
+    ctx.fillText('0 V',12,mid-8);
+
+    ctx.fillStyle='#c6d9e6';ctx.font='14px Segoe UI';
+    ctx.fillText(`${f} Hz  •  T = ${(1000/f).toFixed(2)} ms  •  Vpk = ${pk.toFixed(1)} V  •  Vp-p = ${(2*pk).toFixed(1)} V`,300,30);
+
+    // Animation speed is visual-only; f controls wavelength/cycle density, not just motion speed.
+    acPhase+=.012*(spd/75);
+    acRAF=requestAnimationFrame(loop)
+  };
+  acRAF=requestAnimationFrame(loop)
+}
+function ohmCalc(){let V=Number(document.getElementById('ov').value)||0,R=Math.max(.1,Number(document.getElementById('or').value)||.1),I=V/R,P=V*I;document.getElementById('oa').textContent=`I = ${I.toFixed(3)} A   •   P = ${P.toFixed(2)} W`}
+
+const tutorials=[
+{name:'Series 1',kind:'series',vals:[20,40],V:120}, {name:'Series 2',kind:'series',vals:[10,20,30],V:120},
+{name:'Parallel 1',kind:'parallel',vals:[60,30],V:120}, {name:'Parallel 2',kind:'parallel',vals:[120,60,40],V:120},
+{name:'Combination 1',kind:'combo1',vals:[20,60,30],V:120}, {name:'Combination 2',kind:'combo2',vals:[30,60,20],V:120}
+];
+let tutIndex=0,tutStep=0,tutTimer=null;
+function calcTut(t){let R=t.vals,V=t.V,RT,IT,vs=[],is=[];if(t.kind==='series'){RT=R.reduce((a,b)=>a+b,0);IT=V/RT;R.forEach(r=>{is.push(IT);vs.push(IT*r)})}else if(t.kind==='parallel'){RT=1/R.reduce((a,r)=>a+1/r,0);IT=V/RT;R.forEach(r=>{vs.push(V);is.push(V/r)})}else if(t.kind==='combo1'){let rp=1/(1/R[1]+1/R[2]);RT=R[0]+rp;IT=V/RT;let ep=IT*rp;vs=[IT*R[0],ep,ep];is=[IT,ep/R[1],ep/R[2]]}else{let branch=R[0]+R[1],rp=1/(1/branch+1/R[2]);RT=rp;IT=V/RT;vs=[V*(R[0]/branch),V*(R[1]/branch),V];is=[V/branch,V/branch,V/R[2]]}return{RT,IT,vs,is,p:is.map((i,k)=>i*i*R[k]),PT:V*IT}}
+function tutSteps(t,c){
+ let type=t.kind.startsWith('series')?'series':t.kind.startsWith('parallel')?'parallel':'combination';
+ let r=t.vals.map((x,i)=>`R${i+1}=${x} Ω`).join(', ');
+ let rtEq;
+ if(t.kind==='series') rtEq=`RT = R1 + R2${t.vals.length>2?' + R3':''}\nRT = ${t.vals.join(' + ')} = ${c.RT.toFixed(2)} Ω`;
+ else if(t.kind==='parallel') rtEq=`1/RT = ${t.vals.map((x,i)=>`1/R${i+1}`).join(' + ')}\n1/RT = ${t.vals.map(x=>'1/'+x).join(' + ')}\nRT = ${c.RT.toFixed(2)} Ω`;
+ else if(t.kind==='combo1'){let rp=1/(1/t.vals[1]+1/t.vals[2]);rtEq=`First reduce R2 ∥ R3:\nRP = 1 ÷ (1/${t.vals[1]} + 1/${t.vals[2]}) = ${rp.toFixed(2)} Ω\nRT = R1 + RP = ${t.vals[0]} + ${rp.toFixed(2)} = ${c.RT.toFixed(2)} Ω`}
+ else {let bs=t.vals[0]+t.vals[1];rtEq=`First combine the upper series branch:\nR1 + R2 = ${t.vals[0]} + ${t.vals[1]} = ${bs.toFixed(2)} Ω\nThen (${bs.toFixed(2)} Ω) ∥ R3 → RT = ${c.RT.toFixed(2)} Ω`}
+ return[
+ ['READ • TRACE • CLASSIFY',`Before calculating, trace the current paths. This is a ${type} circuit supplied by ${t.V} VDC with ${r}.`,`Do not calculate yet — identify nodes, paths, and series/parallel relationships.`,`Correct classification prevents the most common downstream mistake: using the right formula on the wrong part of the circuit.`],
+ ['1 — TOTAL RESISTANCE','Collapse the resistor network into one equivalent resistance. Work from the innermost series/parallel group outward.',rtEq,'Equivalent resistance is the load the source “sees.” In combination circuits, reduction order matters.'],
+ ['2 — TOTAL CURRENT','With RT known, the entire circuit can temporarily be treated as one load. Apply Ohm’s Law at the source.',`IT = ET ÷ RT\nIT = ${t.V} V ÷ ${c.RT.toFixed(2)} Ω\nIT = ${c.IT.toFixed(3)} A`,'This establishes source current. From here, follow that current until it reaches a junction; only then can it divide.'],
+ ['3 — COMPONENT VOLTAGE','Now determine the voltage across each component. Use E = IR on series elements and common-node voltage on parallel branches.',c.vs.map((v,i)=>`ER${i+1} = ${v.toFixed(2)} V`).join('\n'),'Series elements divide source voltage. Components connected across the same two nodes must have the same voltage.'],
+ ['4 — COMPONENT CURRENT','Use I = E/R for each resistor. Then apply Kirchhoff’s Current Law at every junction.',c.is.map((v,i)=>`IR${i+1} = ${v.toFixed(3)} A`).join('\n'),'A true series path has one current. At a junction, current divides; when branches rejoin, their currents must sum back to IT.'],
+ ['5 — POWER • VERIFY','Calculate each resistor’s power, total the component powers, and perform final conservation checks.',c.p.map((v,i)=>`PR${i+1} = ${v.toFixed(2)} W`).join('\n')+`\nΣP = ${c.p.reduce((a,b)=>a+b,0).toFixed(2)} W = PT = ET × IT = ${c.PT.toFixed(2)} W`,'A professional solution ends with verification: ΣP = PT; KVL closes every loop; KCL balances every junction. If a check fails, revisit the math before trusting the answer.']];
+}
+function drawTut(t,c,step){
+ let svg=document.getElementById('tutCircuit');if(!svg)return;let R=t.vals;
+ let head=`<defs><filter id="gl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><text x="25" y="28" fill="#fff36a" font-size="18" font-weight="900">${t.name.toUpperCase()} • ${t.V} VDC</text>`;
+ let wire=`stroke="#62eaff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
+ let hres=(x,y,label,val,i,w=84)=>`<g class="rgrp"><polyline points="${x},${y} ${x+12},${y-14} ${x+27},${y+14} ${x+42},${y-14} ${x+57},${y+14} ${x+72},${y-14} ${x+w},${y}" stroke="#ffe45c" stroke-width="4" fill="none" filter="url(#gl)"/><text x="${x+w/2}" y="${y-27}" text-anchor="middle" fill="#fff36a" font-weight="900">${label}</text><text x="${x+w/2}" y="${y+37}" text-anchor="middle" fill="#54e8ff" font-weight="900">${val} Ω</text>${step>=3?`<text class="vmark hotValue" x="${x+w/2}" y="${y+55}" text-anchor="middle">${c.vs[i].toFixed(1)} V</text>`:''}${step>=4?`<text class="imark hotValue" x="${x+w/2}" y="${y+71}" text-anchor="middle">${c.is[i].toFixed(3)} A</text>`:''}${step>=5?`<text class="pmark hotValue" x="${x+w/2}" y="${y+86}" text-anchor="middle">${c.p[i].toFixed(1)} W</text>`:''}</g>`;
+ let vres=(x,y1,y2,label,val,i)=>{let cy=(y1+y2)/2;return `<g class="rgrp"><polyline points="${x},${y1} ${x-14},${y1+12} ${x+14},${y1+27} ${x-14},${y1+42} ${x+14},${y1+57} ${x-14},${y2-12} ${x},${y2}" stroke="#ffe45c" stroke-width="4" fill="none" filter="url(#gl)"/><text x="${x+25}" y="${cy-9}" fill="#fff36a" font-weight="900">${label}</text><text x="${x+25}" y="${cy+11}" fill="#54e8ff" font-weight="900">${val} Ω</text>${step>=3?`<text class="vmark hotValue" x="${x+25}" y="${cy+30}">${c.vs[i].toFixed(1)} V</text>`:''}${step>=4?`<text class="imark hotValue" x="${x+25}" y="${cy+47}">${c.is[i].toFixed(3)} A</text>`:''}${step>=5?`<text class="pmark hotValue" x="${x+25}" y="${cy+64}">${c.p[i].toFixed(1)} W</text>`:''}</g>`};
+ let source=(x,yt,yb)=>`<line x1="${x-25}" y1="${yt}" x2="${x+25}" y2="${yt}" stroke="#ffbd45" stroke-width="5"/><line x1="${x-15}" y1="${yb}" x2="${x+15}" y2="${yb}" stroke="#ffbd45" stroke-width="5"/><text x="${x-38}" y="${(yt+yb)/2+6}" text-anchor="end" fill="#ff6666" font-weight="1000">${t.V} VDC</text><text x="${x+34}" y="${yt+6}" fill="#fff36a" font-weight="900">+</text><text x="${x+34}" y="${yb+7}" fill="#fff36a" font-weight="900">−</text>`;
+ let body='',flow='';
+ if(t.kind==='series'){
+   let left=95,right=620,top=105,bottom=275,sy1=190,sy2=220,start=185,gap=R.length===2?170:125;
+   body=`<path d="M${left} ${top} H${right} V${bottom} H${left} M${left} ${top} V${sy1} M${left} ${sy2} V${bottom}" ${wire}/>${source(left,sy1,sy2)}`;
+   R.forEach((r,i)=>{let x=start+i*gap;body+=hres(x,top,'R'+(i+1),r,i);});
+   flow=`<path class="flow" d="M${left} ${bottom} H${right} V${top} H${left}"/>`;
+ }else if(t.kind==='parallel'){
+   let left=105,top=70,bottom=285,sy1=190,sy2=220,first=260,pitch=135,last=first+(R.length-1)*pitch;
+   body=`<path d="M${left} ${top} H${last} M${left} ${bottom} H${last} M${left} ${top} V${sy1} M${left} ${sy2} V${bottom}" ${wire}/>${source(left,sy1,sy2)}`;
+   R.forEach((r,i)=>{let x=first+i*pitch;body+=`<circle cx="${x}" cy="${top}" r="5" class="nodePulse" fill="#35e4ff"/><circle cx="${x}" cy="${bottom}" r="5" class="nodePulse" fill="#35e4ff"/><path d="M${x} ${top} V120 M${x} 235 V${bottom}" ${wire}/>${vres(x,120,235,'R'+(i+1),r,i)}`;flow+=`<path class="flow" d="M${left} ${bottom} H${x} V${top} H${left}"/>`;});
+ }else if(t.kind==='combo1'){
+   // Validated Level 1 topology: R1 + (R2 || R3)
+   let left=90,top=75,bottom=285,sy1=190,sy2=220,railL=330,railR=570;
+   body=`<path d="M${left} ${top} H165 M249 ${top} H${railR} M${left} ${top} V${sy1} M${left} ${sy2} V${bottom} H${railR} M${railL} ${top} V${bottom} M${railR} ${top} V${bottom}" ${wire}/>${source(left,sy1,sy2)}${hres(165,top,'R1',R[0],0)}<circle cx="${railL}" cy="${top}" r="5" class="nodePulse" fill="#35e4ff"/><circle cx="${railL}" cy="${bottom}" r="5" class="nodePulse" fill="#35e4ff"/>${vres(410,110,185,'R2',R[1],1)}${vres(510,110,185,'R3',R[2],2)}<path d="M410 ${top} V110 M410 185 V${bottom} M510 ${top} V110 M510 185 V${bottom}" ${wire}/><circle cx="410" cy="${top}" r="5" class="nodePulse" fill="#35e4ff"/><circle cx="510" cy="${top}" r="5" class="nodePulse" fill="#35e4ff"/>`;
+   flow=`<path class="flow" d="M${left} ${bottom} H410 V${top} H${left}"/><path class="flow" d="M${left} ${bottom} H510 V${top} H${railL}"/>`;
+ }else{
+   // Validated Level 2 topology: (R1 + R2) || R3
+   let left=100,top=70,bottom=285,sy1=190,sy2=220,railR=600;
+   body=`<path d="M${left} ${top} H${railR} M${left} ${bottom} H${railR} M${left} ${top} V${sy1} M${left} ${sy2} V${bottom}" ${wire}/>${source(left,sy1,sy2)}<path d="M240 ${top} V110 M240 194 V${bottom} M410 ${top} V110 M410 194 V${bottom} M540 ${top} V120 M540 235 V${bottom}" ${wire}/>${vres(240,110,194,'R1',R[0],0)}${vres(410,110,194,'R2',R[1],1)}${vres(540,120,235,'R3',R[2],2)}<path d="M240 194 H410  M240 110 H410" ${wire}/>`;
+   // redraw upper branch as a true series string across the rails
+   body=`<path d="M${left} ${top} H180 M${left} ${bottom} H${railR} M${left} ${top} V${sy1} M${left} ${sy2} V${bottom} M180 ${top} H265 M349 ${top} H390 M474 ${top} H${railR} M${railR} ${top} V${bottom} M${left} ${bottom} H${railR}" ${wire}/>${source(left,sy1,sy2)}${hres(265,top,'R1',R[0],0)}${hres(390,top,'R2',R[1],1)}<path d="M520 ${top} V120 M520 235 V${bottom}" ${wire}/>${vres(520,120,235,'R3',R[2],2)}<circle cx="180" cy="${top}" r="5" class="nodePulse" fill="#35e4ff"/><circle cx="520" cy="${top}" r="5" class="nodePulse" fill="#35e4ff"/><circle cx="520" cy="${bottom}" r="5" class="nodePulse" fill="#35e4ff"/>`;
+   flow=`<path class="flow" d="M${left} ${bottom} H${railR} V${top} H${left}"/><path class="flow" d="M${left} ${bottom} H520 V${top} H${left}"/>`;
+ }
+ let eq=step===1?`<text class="hotValue" x="350" y="330" text-anchor="middle" fill="#77ff9c" font-size="18" font-weight="900">EQUIVALENT LOAD → RT = ${c.RT.toFixed(2)} Ω</text>`:'';
+ svg.innerHTML=head+body+(step>=2?flow:'')+eq;
+}
+function renderTut(){let t=tutorials[tutIndex],c=calcTut(t),st=tutSteps(t,c),x=st[tutStep];
+const layman=[
+'Before touching the calculator, ask: How many roads can the electrons take? One road means series. Multiple roads means parallel. A mixture means combination.',
+'Pretend the entire resistor network is being replaced by one imaginary resistor that would load the source exactly the same way. That imaginary value is RT.',
+'Now the source only cares about two numbers: its voltage and the total resistance. Divide voltage by RT to find how much current leaves the source.',
+'Voltage is the electrical push across a component. Series components share that push; parallel branches connected to the same two points receive the same push.',
+'Current is the amount of charge flow. It stays the same through a series path, but at a junction it splits among the available branches and later recombines.',
+'Power tells us how quickly each resistor converts electrical energy to heat. Adding every resistor’s watts should equal the watts supplied by the source.'
+];
+const rules=[
+'Trace first. Calculate second.',
+'Reduce the deepest series/parallel group first, then work outward.',
+'Use IT = ET ÷ RT only after RT is known.',
+'Series: voltage divides. Parallel: branch voltage is common.',
+'Series: current is common. Parallel: branch currents add to total current.',
+'Finish with a check: ΣP = PT, KVL closes loops, and KCL balances junctions.'
+];document.getElementById('tutStep').textContent=`STEP ${tutStep+1} OF 6`;document.getElementById('tutTitle').textContent=x[0];document.getElementById('tutExplain').textContent=x[1];document.getElementById('tutEq').textContent=x[2];document.getElementById('tutEq').classList.add('tutEquationStack');document.getElementById('tutAnswer').textContent=tutStep===0?'Trace it before you calculate it.':tutStep===1?`RT = ${c.RT.toFixed(2)} Ω`:tutStep===2?`IT = ${c.IT.toFixed(3)} A`:tutStep===3?'Voltage relationships verified':tutStep===4?'Current relationships verified':`PT = ${c.PT.toFixed(2)} W ✓`;document.getElementById('tutWhy').textContent=x[3];document.getElementById('tutLayman').textContent=layman[tutStep];document.getElementById('tutRule').textContent=rules[tutStep];document.getElementById('tutProgress').innerHTML=st.map((_,i)=>`<i class="${i<=tutStep?'on':''} ${i===tutStep?'current':''}"></i>`).join('');document.getElementById('tutNav').innerHTML=tutorials.map((q,i)=>`<button class="${i===tutIndex?'active':''}" onclick="selectTut(${i})">${q.name}</button>`).join('');document.getElementById('tutRT').textContent=tutStep>=1?`${c.RT.toFixed(2)} Ω`:'—';document.getElementById('tutIT').textContent=tutStep>=2?`${c.IT.toFixed(3)} A`:'—';document.getElementById('tutPT').textContent=tutStep>=5?`${c.PT.toFixed(2)} W`:'—';let stat=document.querySelectorAll('.tutStatus div');stat.forEach((el,i)=>{el.classList.remove('activeValue','doneValue');let target=tutStep===1?0:tutStep===2?1:tutStep===5?2:-1;if(i===target)el.classList.add('activeValue');else if((i===0&&tutStep>1)||(i===1&&tutStep>2)||(i===2&&tutStep>5))el.classList.add('doneValue')});let call=['Trace the complete path and identify every junction before choosing an equation.','Watch the network conceptually collapse into one equivalent load.','The animated cyan path now represents source current and branch current paths.','Pink labels show the voltage across each resistor.','Cyan labels show component current; compare branch currents with IT.','Orange labels show component power. The final equality is the energy check.'][tutStep];document.getElementById('tutCallout').innerHTML=`<b>WATCH THE CIRCUIT:</b> ${call}<div class="tutMiniLegend"><span class="lr">YELLOW = R</span><span class="lv">PINK = V</span><span class="li">CYAN = I</span><span class="lp">ORANGE = P</span></div>`;drawTut(t,c,tutStep)}
+function stopTut(){if(tutTimer){clearInterval(tutTimer);tutTimer=null;let b=document.getElementById('tutPlay');if(b)b.textContent='▶ Auto Play'}}
+function selectTut(i){stopTut();tutIndex=i;tutStep=0;renderTut()}function tutNext(){tutStep=Math.min(5,tutStep+1);renderTut()}function tutPrev(){tutStep=Math.max(0,tutStep-1);renderTut()}function tutRestart(){stopTut();tutStep=0;renderTut()}function tutToggle(){let b=document.getElementById('tutPlay');if(tutTimer){stopTut()}else{b.textContent='⏸ Pause';tutTimer=setInterval(()=>{if(tutStep<5)tutStep++;else if(tutIndex<tutorials.length-1){tutStep=0;tutIndex++}else{stopTut();return}renderTut()},7000)}}
+
+ohmCalc();
+</script>
+</body></html>
